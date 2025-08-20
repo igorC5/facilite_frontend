@@ -14,10 +14,10 @@ const Homepage = () => {
   const bg = useColorModeValue("gray.100", "gray.800");
   const vendasColor = useColorModeValue("green.500", "green.700");
   const financeiroColor = useColorModeValue("yellow.400", "yellow.700");
-  const estoqueColor = useColorModeValue("blue.500", "blue.700");
+  const estoqueColor = useColorModeValue("blue.500", "blue.800");
   const fiscalColor = useColorModeValue("orange.400", "orange.700");
   const contadorColor = useColorModeValue("cyan.400", "cyan.700");
-  const estatisticasColor = useColorModeValue("purple.400", "purple.700");
+  const estatisticasColor = useColorModeValue("purple.400", "purple.800");
 
   const modulos = [
     {
@@ -29,6 +29,7 @@ const Homepage = () => {
         {
           id: 1,
           texto: "Clientes / Fornecedores",
+          path: "/Vendas/Clientes-Fornecedores/Clientes",
         },
         {
           id: 2,

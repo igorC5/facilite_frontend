@@ -1,6 +1,7 @@
 import { useColorModeValue } from "@/components/ui/color-mode";
 import { Flex, Text } from "@chakra-ui/react";
 import type React from "react";
+import { useNavigate } from "react-router-dom";
 
 interface ICardSelecionado {
   cor?: string;
@@ -14,6 +15,7 @@ const CardSelecionado: React.FC<ICardSelecionado> = ({
   opcoes,
 }) => {
   const color = useColorModeValue("gray.800", "gray.100");
+  const navigate = useNavigate();
 
   return (
   <Flex
@@ -52,6 +54,11 @@ const CardSelecionado: React.FC<ICardSelecionado> = ({
             cursor="pointer"
             borderWidth="2px"
             borderColor="black"
+            onClick={() => {
+              if (opc.path) {
+                navigate(opc.path)
+              }
+            }}
           >
             <Text 
               color={color}

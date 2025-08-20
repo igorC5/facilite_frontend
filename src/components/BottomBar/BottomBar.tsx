@@ -7,7 +7,7 @@ const BottomBar = () => {
   return (
     <Flex
       bg={bg}
-      h="8%" 
+      h="10vh" 
       borderWidth="1px" 
       align="center"
       px="3"
