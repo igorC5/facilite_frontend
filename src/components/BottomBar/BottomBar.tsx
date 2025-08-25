@@ -8,7 +8,7 @@ const BottomBar = () => {
     <Flex
       bg={bg}
       h="10vh" 
-      borderWidth="1px" 
+      borderTopWidth="1px" 
       align="center"
       px="3"
       justify="space-between"
