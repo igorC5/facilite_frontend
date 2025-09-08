@@ -16,6 +16,10 @@ const DinamicTable: React.FC<IDinamicTable> = ({
   const bg = useColorModeValue("white", "gray.700");
   const color = useColorModeValue("gray.800", "gray.100");
 
+  if (!data) {
+    return null;
+  }
+
   return (
     <Box
       w="100%" 
@@ -27,7 +31,7 @@ const DinamicTable: React.FC<IDinamicTable> = ({
       px="4"
       rounded="2xl"
     >
-      <Table.Root w="100%" h="90%" bg={bg}>
+      <Table.Root w="100%" bg={bg}>
         <Table.Header bg={bg} >
           <Table.Row >
             {colunas?.map(coluna => {

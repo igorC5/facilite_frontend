@@ -1,10 +1,11 @@
 import { SubModulesConfigs } from "@/configs/SubModulesConfigs";
 import type { Modulo, NomesModulos, NomesSubModulos, NomesSubModulosPages, SubModulo } from "@/types/SubModulesConfigs";
-import { Flex, Text, VStack } from "@chakra-ui/react"
+import { Box, Flex, Icon, Text, VStack } from "@chakra-ui/react"
 import type React from "react";
 import { useColorModeValue } from "../ui/color-mode";
 import { useNavigate } from "react-router-dom";
 import { useColors } from "@/styles/cores";
+import { FileJson } from "lucide-react";
 
 interface ISubModuleBar {
   modulo: NomesModulos;
@@ -32,7 +33,16 @@ const SubModuleBar: React.FC<ISubModuleBar> = ({
   return (
     <Flex borderRightWidth="2px" w="13vw" flexDirection="column" bg={Colors.bgComponentes}>
       <Flex w="100%" borderBottomWidth="1px" h="100px">
-        <Text>BARRAS</Text>
+        <Box 
+          w="100%" 
+          p="4" 
+          cursor="Pointer" 
+          onClick={() => {
+            navigate('/Homepage')
+          }}
+        > 
+          <Icon as={FileJson} boxSize={14} />
+        </Box>
       </Flex>
       <Flex>
         <Flex flexDir="column" w="100%">

@@ -46,18 +46,61 @@ const Homepage = () => {
       titulo: 'Financeiro',
       cor: financeiroColor,
       icon: <Banknote size="120" strokeWidth={1.5} />,
+      opcoes: [
+        {
+          id: 1,
+          texto: "Contas a Pagar/Receber",
+        },
+        {
+          id: 2,
+          texto: "Fluxo de Caixa",
+        },
+        {
+          id: 3,
+          texto: "Conciliação Bancaria",
+        },
+      ]
     },
     {
       id: 3,
       titulo: 'Estoque',
       cor: estoqueColor,
       icon: <Package size="120" strokeWidth={1.5} />,
+      opcoes: [
+        {
+          id: 1,
+          texto: "Produtos",
+        },
+        {
+          id: 2,
+          texto: "Inventário",
+        },
+        {
+          id: 3,
+          texto: "Gerenciar Estoque",
+        },
+      ]
     },
+    // produtos, inventário, gerenciar estoque
     {
       id: 4,
       titulo: 'Fiscal',
       cor: fiscalColor,
       icon: <ScrollText size="120" strokeWidth={1.5} />,
+      opcoes: [
+        {
+          id: 1,
+          texto: "Impostos",
+        },
+        {
+          id: 2,
+          texto: "SPED Fiscal",
+        },
+        {
+          id: 3,
+          texto: "Integração ao Contador",
+        },
+      ]
     },
     {
       id: 5,
