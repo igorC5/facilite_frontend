@@ -1,15 +1,12 @@
-import BottomBar from "@/components/BottomBar/BottomBar"
 import DinamicTable from "@/components/DinamicTable/DinamicTable";
-import SubModuleBar from "@/components/SubModuleBar/SubModuleBar";
-import { useColorModeValue } from "@/components/ui/color-mode";
+import ModulePage from "@/components/ModulePage/ModulePage";
 import { Tooltip } from "@/components/ui/tooltip";
 import { useColors } from "@/styles/cores";
-import { Button, Flex, Icon, IconButton, Input, InputGroup, Text} from "@chakra-ui/react"
-import { Funnel, LucideEdit, LucideTrash, Search } from "lucide-react";
+import { Button, Flex, Heading, Icon, IconButton, Input, InputGroup, Spacer} from "@chakra-ui/react"
+import { Funnel, LucideEdit, LucideTrash, PlusCircle, Search } from "lucide-react";
 import React from "react";
 
 const Fornecedores = () => {
-  const bg = useColorModeValue("gray.100", "gray.800");  
   const Colors = useColors();
   
   const colunasFornecedores = React.useMemo(
@@ -118,43 +115,47 @@ const Fornecedores = () => {
   }
 
   return (
-    <>
-      <Flex h="90vh" bg={bg}>
-        <SubModuleBar modulo="vendas" submodulo="clientes-fornecedores" page="Fornecedores" />
-        <Flex py='3' px="8" w="87vw" flexDir="column" overflowY="hidden" h="100%">
-          <Flex h="50px" mb="2">
-            <InputGroup w="500px"
-              h="100%"
-              startElement={
-                <Flex h="100%" align="center"> 
-                  <Icon as={Search} />
-                </Flex>
-              }
-            >
-              <Input
-                placeholder="Digite aqui"
-                bg={Colors.bgComponentes} 
-                borderWidth={2} 
-                w="500px"
-                h="100%"
-                mr="2"
-                rounded="2xl"
-              />
-            </InputGroup>
-            <Tooltip content="Filtros" openDelay={0} closeDelay={100}>
-              <IconButton rounded="2xl" w="50px" h="100%" bg={Colors.bgComponentes} borderWidth={2} variant="outline">
-                <Icon as={Funnel} color={Colors.textColor} />
-              </IconButton>
-            </Tooltip>
-          </Flex>
-          <DinamicTable 
-            colunas={colunasFornecedores}
-            data={pegarDadosTabela()}
+    <ModulePage
+      paginas={[
+        { nome: 'Clientes', url: '/Vendas/Clientes-Fornecedores/Clientes' },
+        { nome: 'Fornecedores', url: '/Vendas/Clientes-Fornecedores/Fornecedores' },
+      ]}
+    >
+      <Heading fontSize="2xl" py="4">Fornecedores</Heading>
+      <Flex h="50px" mb="3">
+        <InputGroup w="500px"
+          h="100%"
+          startElement={
+            <Flex h="100%" align="center"> 
+              <Icon as={Search} />
+            </Flex>
+          }
+        >
+          <Input
+            placeholder="Digite aqui"
+            bg={Colors.bgComponentes} 
+            borderWidth={2} 
+            w="500px"
+            h="100%"
+            mr="2"
+            rounded="2xl"
           />
-        </Flex>
+        </InputGroup>
+        <Tooltip content="Filtros" openDelay={0} closeDelay={100}>
+          <IconButton rounded="2xl" w="50px" h="100%" bg={Colors.bgComponentes} borderWidth={2} variant="outline">
+            <Icon as={Funnel} color={Colors.textColor} />
+          </IconButton>
+        </Tooltip>
+        <Spacer />
+        <Button bg="blue.600" color="white">
+          <PlusCircle /> Novo Fornecedor
+        </Button>
       </Flex>
-      <BottomBar />
-    </>
+      <DinamicTable 
+        colunas={colunasFornecedores}
+        data={pegarDadosTabela()}
+      />
+    </ModulePage>
   )
 }
 

@@ -1,32 +1,26 @@
-import { SubModulesConfigs } from "@/configs/SubModulesConfigs";
-import type { Modulo, NomesModulos, NomesSubModulos, NomesSubModulosPages, SubModulo } from "@/types/SubModulesConfigs";
 import { Box, Flex, Icon, Text, VStack } from "@chakra-ui/react"
 import type React from "react";
 import { useColorModeValue } from "../ui/color-mode";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useColors } from "@/styles/cores";
 import { FileJson } from "lucide-react";
 
 interface ISubModuleBar {
-  modulo: NomesModulos;
-  submodulo: NomesSubModulos;
-  page: NomesSubModulosPages;
+  paginas?: {
+    nome: string,
+    url: string,
+  }[]
 }
 
 const SubModuleBar: React.FC<ISubModuleBar> = ({
-  modulo,
-  submodulo,
-  page,
+  paginas,
 }) => {
-  const config = SubModulesConfigs;
+  const location = useLocation();
   const color = useColorModeValue("gray.700", "gray.100");  
   const AtualColor = useColorModeValue("white", "white");  
   const buttonBg = useColorModeValue('gray.200', 'gray.600');
   const AtualButtonBg = useColorModeValue('blue.500', 'blue.800');
   
-  const moduloAtual = config.find(mod => mod.nome_mod === modulo);
-  const subModuloAtual = moduloAtual?.subModulos.find(submod => submod.nome_sub === submodulo);
-
   const navigate = useNavigate();
   const Colors = useColors();
 
@@ -46,30 +40,27 @@ const SubModuleBar: React.FC<ISubModuleBar> = ({
       </Flex>
       <Flex>
         <Flex flexDir="column" w="100%">
-          {
-            subModuloAtual?.pages.map(pag => {
-              return (                
-                <Flex 
-                  bg={pag.nome_page === page ? AtualButtonBg : buttonBg}
-                  rounded="2xl"
-                  p="2"
-                  m="2"
-                  cursor="pointer"
-                  onClick={() => {
-                    console.log(pag.path)
-                    navigate(pag.path)
-                  }}
+          {paginas?.map(item => {
+            return (
+              <Flex 
+                bg={item.url === location.pathname ? AtualButtonBg : buttonBg}
+                rounded="2xl"
+                p="2"
+                m="2"
+                cursor="pointer"
+                onClick={() => {
+                  navigate(item.url)
+                }}
+              >
+                <Text
+                  fontWeight="medium"
+                  color={item.url === location.pathname ? AtualColor : color}
                 >
-                  <Text
-                    fontWeight="medium"
-                    color={pag.nome_page === page ? AtualColor : color}
-                  >
-                    {pag.nome_page}
-                  </Text>
-                </Flex>
-              )
-            })
-          }
+                  {item.nome}
+                </Text>
+              </Flex>
+            )
+          })}
         </Flex>
       </Flex>
     </Flex>
