@@ -1,13 +1,16 @@
 import DinamicTable from "@/components/DinamicTable/DinamicTable";
+import JanelaSimples from "@/components/Janelas/JanelaSimples";
 import ModulePage from "@/components/ModulePage/ModulePage";
 import { Tooltip } from "@/components/ui/tooltip";
 import { useColors } from "@/styles/cores";
 import { Button, Flex, Heading, Icon, IconButton, Input, InputGroup, Spacer} from "@chakra-ui/react"
 import { Funnel, LucideEdit, LucideTrash, PlusCircle, Search } from "lucide-react";
-import React from "react";
+import React, { useState } from "react";
 
 const Fornecedores = () => {
   const Colors = useColors();
+
+  const [filterOpen, setFilterOpen] = useState(false);
   
   const colunasFornecedores = React.useMemo(
     () => [
@@ -142,7 +145,9 @@ const Fornecedores = () => {
           />
         </InputGroup>
         <Tooltip content="Filtros" openDelay={0} closeDelay={100}>
-          <IconButton rounded="2xl" w="50px" h="100%" bg={Colors.bgComponentes} borderWidth={2} variant="outline">
+          <IconButton rounded="2xl" w="50px" h="100%" bg={Colors.bgComponentes} borderWidth={2} variant="outline"
+            onClick={() => setFilterOpen(true)}
+          >
             <Icon as={Funnel} color={Colors.textColor} />
           </IconButton>
         </Tooltip>
@@ -155,6 +160,13 @@ const Fornecedores = () => {
         colunas={colunasFornecedores}
         data={pegarDadosTabela()}
       />
+
+      {/* JANELAS */}
+      <JanelaSimples 
+        open={filterOpen}
+        onClose={() => setFilterOpen(false)}
+      />
+
     </ModulePage>
   )
 }

@@ -1,3 +1,4 @@
+import JanelaSimples from "@/components/Janelas/JanelaSimples";
 import { useColorModeValue } from "@/components/ui/color-mode";
 import { Banknote, Calculator, ChartNoAxesCombined, HandCoins, Package, ScrollText } from "lucide-react";
 
@@ -19,11 +20,15 @@ export function useModulos(){
         {
           id: 1,
           texto: "Clientes / Fornecedores",
-          path: "/Vendas/Clientes-Fornecedores/Clientes",
+          janelaId: 1,
+          componente: JanelaSimples,
+          // path: "/Vendas/Clientes-Fornecedores/Clientes",
         },
         {
           id: 2,
           texto: "Pedidos / Novo Pedido",
+          janelaId: 2,
+          componente: JanelaSimples,
         },
         {
           id: 3,

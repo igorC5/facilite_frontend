@@ -7,12 +7,14 @@ interface ICardSelecionado {
   cor?: string;
   titulo?: string;
   opcoes: any;
+  addJanela: any;
 }
 
 const CardSelecionado: React.FC<ICardSelecionado> = ({
   cor,
   titulo,
   opcoes,
+  addJanela,
 }) => {
   const color = useColorModeValue("gray.800", "gray.100");
   const navigate = useNavigate();
@@ -24,12 +26,10 @@ const CardSelecionado: React.FC<ICardSelecionado> = ({
     bg={cor}
     rounded="2xl"
     mx="20"
-    my="5"
     flexDir="column"
     userSelect="none"
   >
     <Text
-      mt="5"
       fontWeight="medium"
       fontSize={40}
       color={color}
@@ -55,6 +55,9 @@ const CardSelecionado: React.FC<ICardSelecionado> = ({
             borderWidth="2px"
             borderColor="black"
             onClick={() => {
+              if (opc.janelaId) {
+                addJanela(opc.janelaId)
+              }
               if (opc.path) {
                 navigate(opc.path)
               }
