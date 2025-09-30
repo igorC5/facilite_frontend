@@ -1,6 +1,6 @@
 import { useColorModeValue } from "@/components/ui/color-mode";
 import { useAuth } from "@/contexts/AuthContext";
-import { Button, Flex, SimpleGrid, Text } from "@chakra-ui/react";
+import { Button, Flex, SimpleGrid } from "@chakra-ui/react";
 import { HandCoins } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import CardModulo from "./Components/CardModulo";
@@ -10,16 +10,18 @@ import { useModulos } from "@/configs/SubModulesConfigs";
 import BottomBar from "@/components/BottomBar/BottomBar";
 import type { IJanelaSimples } from "@/components/Janelas/JanelaSimples";
 
+interface IJanelas {
+  id: number; 
+  minimizada: boolean; 
+  zIndex: number
+}
+
 const Homepage = () => {
   const { logout } = useAuth();
   const navigate = useNavigate();
   const bg = useColorModeValue("gray.100", "gray.800");
   const modulos = useModulos();
-  const [janelas, setJanelas] = useState<{ id: number; minimizada: boolean}[]>([]);
-
-  useEffect(() => {
-    console.log(janelas)
-  }, [janelas])
+  const [janelas, setJanelas] = useState<{ id: number; minimizada: boolean; zIndex: number}[]>([]);
 
   const [modSelecionado, setModSelecionado] = useState(0);
   const HandleModSelecionado = (num: number) => {
@@ -74,22 +76,68 @@ const Homepage = () => {
                 cor={modulos.find(mod => mod.id === modSelecionado)?.cor}
                 titulo={modulos.find(mod => mod.id === modSelecionado)?.titulo}
                 opcoes={modulos.find(mod => mod.id === modSelecionado)?.opcoes}
-                addJanela={(e) => {
-                  if (!janelas.some(jan => jan.id === e)) {
+                addJanela={(janelaID, opcs) => {
+                  console.log(janelaID)
+                  console.log(opcs)
+
+                  // desfazer minimizacao
+                  if (janelas.some(jan => jan.id === janelaID && jan.minimizada)) {
+                    setJanelas(prev => prev.map(
+                      prevJanela => prevJanela.id === janelaID 
+                      ? {...prevJanela, minimizada: false}
+                      : prevJanela
+                    ))
+                  }
+
+                  // abrir janela
+                  if (!janelas.some(jan => jan.id === janelaID)) {
                     setModSelecionado(0)
                     setJanelas(prev => [...prev, 
                       { 
-                        id: e, 
+                        ...opcs,
+                        id: janelaID, 
                         minimizada: false,
+                        zIndex: 1,
                       }
                     ])
                   }
+                  
                 }}
               />
             </Flex>
           </Flex>
         </Flex>
-        <BottomBar janelas={janelas} />
+        <BottomBar 
+          janelas={janelas} 
+          focaJanela={(janelaID) => {
+            // MELHORAR TODAS AS FUNCOES DE JANELAS FUTURAMENTE POR FAVOR
+            if (janelas.some(jan => jan.id === janelaID)) {
+              setJanelas(prev =>
+                prev.map(
+                  janela => janela.id !== janelaID
+                  ? { ...janela, zIndex: 1 }
+                  : janela
+                )
+              );
+              setJanelas(prev => 
+                prev.map(
+                  janela => janela.id === janelaID
+                  ? { ...janela, zIndex : 2 }
+                  : janela
+                )
+              )
+            }
+            if (janelas.some(jan => jan.id === janelaID && jan.minimizada)) {
+              setJanelas(prev => 
+                prev.map(
+                  prevJanela => prevJanela.id === janelaID 
+                  ? {...prevJanela, minimizada: false}
+                  : prevJanela
+                )
+              )
+            }
+          }}
+        />
       </Flex>
 
       {janelas?.map(janela => {
@@ -101,10 +149,42 @@ const Homepage = () => {
       
         return modulo ? (
           <Componente 
+            janelaInfo={janela}
             open={true} 
-            fecharJanela={() => {
-              setJanelas(prev => prev.filter(jan => jan.id !== janela.id))
-            }} 
+            fecharJanela={(janelaID) => {
+              setJanelas(prev => 
+                prev.filter(jan => jan.id !== janelaID)
+              )
+            }}
+            minimizada={janela.minimizada}
+            zIndexJanela={janela.zIndex}
+            setZIndexJanela={
+              (foco) => {
+                setJanelas(prev =>
+                  prev.map(janela =>
+                    janela.id !== foco
+                      ? { ...janela, zIndex: 1 }
+                      : janela
+                  )
+                );
+                setJanelas(prev => 
+                  prev.map(janela =>
+                    janela.id === foco
+                      ? { ...janela, zIndex : 2 }
+                      : janela
+                  )
+                )
+              }
+            }
+            minimiza={() => {
+              setJanelas(prev => 
+                prev.map(prevJanela => 
+                  prevJanela.id === janela.id 
+                  ? {...prevJanela, minimizada: true}
+                  : prevJanela
+
+                ))
+            }}
           />        
         ) : null;
       })}

@@ -8,9 +8,10 @@ interface IBottomBar {
     id: number;
     minimizada: boolean;
   }[]
+  focaJanela: any;
 }
 
-const BottomBar: React.FC<IBottomBar> = ({janelas}) => {
+const BottomBar: React.FC<IBottomBar> = ({janelas, focaJanela}) => {
   const bg = useColorModeValue('blue.500', 'blue.700');
   const modulos = useModulos();
   
@@ -47,7 +48,16 @@ const BottomBar: React.FC<IBottomBar> = ({janelas}) => {
       {
         janelasBarra.map(janela => {
           return (
-            <Flex ml="2" p="2" borderWidth="1px" rounded="2xl">
+            <Flex 
+              cursor="pointer"
+              ml="2" 
+              p="2" 
+              borderWidth="1px" 
+              rounded="2xl"
+              onClick={() => {
+                focaJanela(janela.id)
+              }}
+            >
               <Text>{janela.titulo}</Text>
             </Flex>
           )

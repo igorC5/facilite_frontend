@@ -56,7 +56,7 @@ const CardSelecionado: React.FC<ICardSelecionado> = ({
             borderColor="black"
             onClick={() => {
               if (opc.janelaId) {
-                addJanela(opc.janelaId)
+                addJanela(opc.janelaId, opc)
               }
               if (opc.path) {
                 navigate(opc.path)

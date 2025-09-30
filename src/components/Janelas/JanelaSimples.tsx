@@ -5,13 +5,27 @@ import { useState } from "react";
 import { Rnd } from "react-rnd";
 
 export interface IJanelaSimples {
-  open: boolean,
-  fecharJanela: any,
+  janelaInfo: { 
+    id: number; 
+    minimizada: boolean; 
+    zIndex: number
+  };
+  open: boolean;
+  fecharJanela: any;
+  minimiza?: any;
+  minimizada?: boolean;
+  zIndexJanela: number;
+  setZIndexJanela: any;
 }
 
 export default function JanelaSimples({
+  janelaInfo,
   open, 
   fecharJanela,
+  minimiza,
+  minimizada,
+  zIndexJanela,
+  setZIndexJanela,
 }: IJanelaSimples) {
   if (!open) return null;
 
@@ -19,14 +33,9 @@ export default function JanelaSimples({
 
   const [size, setSize] = useState({ width: '50%', height: '50%' });
   const [position, setPosition] = useState({ x: 500, y: 100 });
-  const [minimizado, setMinimizado] = useState(false);
 
   const minimizar = () => {
-    if (minimizado) {
-      setMinimizado(false);
-    } else {
-      setMinimizado(true);
-    }
+    minimiza();
   }
 
   const maximizar = () => {
@@ -54,7 +63,18 @@ export default function JanelaSimples({
   }
 
   return (
-    <Flex w="100vw" h="90vh" position="absolute" top="0" overflow="hidden" pointerEvents="none">
+    <Flex 
+      onClick={() => {
+        setZIndexJanela(janelaInfo.id)
+      }}
+      zIndex={minimizada ? -5 : zIndexJanela}
+      w="100vw"
+      h="90vh" 
+      position="absolute" 
+      top="0" 
+      overflow="hidden" 
+      pointerEvents="none"
+    >
       <Rnd
         minWidth={500}
         minHeight={300}
@@ -88,6 +108,7 @@ export default function JanelaSimples({
           flexDir="column"
         >
           <Flex flexDir="row" h="30px" bg={Colors.borderColor}>
+            <Text>{janelaInfo.texto}</Text>
             <Spacer />
             <Button 
               h="30px"
@@ -126,7 +147,11 @@ export default function JanelaSimples({
               _hover={{
                 bg: 'tomato'
               }}
-              onClick={fecharJanela}
+              onClick={
+                () => {
+                  fecharJanela(janelaInfo.id)
+                }
+              }
             >
               <X />
             </Button>

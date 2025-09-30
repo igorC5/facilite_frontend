@@ -58,7 +58,6 @@ const Clientes = () => {
         acesso: 'acoes',
         hCell: {textAlign: 'center', width: '0px'},
         cell: (row) => {
-          console.log(row)
           return (
             <Flex w="max-content">
               <Tooltip content="Editar cliente" openDelay={0}>
