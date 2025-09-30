@@ -50,7 +50,7 @@ const Homepage = () => {
           </Flex>
           <Flex w="100%">
             <Flex w="60%">
-              <SimpleGrid 
+              <SimpleGrid
                 w="100%" 
                 columns={3} 
                 gap="40px"

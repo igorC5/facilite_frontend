@@ -21,6 +21,14 @@ export default function JanelaSimples({
   const [position, setPosition] = useState({ x: 500, y: 100 });
   const [minimizado, setMinimizado] = useState(false);
 
+  const minimizar = () => {
+    if (minimizado) {
+      setMinimizado(false);
+    } else {
+      setMinimizado(true);
+    }
+  }
+
   const maximizar = () => {
     setPosition({ x: 0, y: 0 })
     setSize({ width: '100%', height: '100%' })
@@ -91,7 +99,7 @@ export default function JanelaSimples({
                 bg: 'rgba(0,0,0, 0.2)'
               }}
               onClick={() => {
-
+                minimizar()
               }}
             >
               <Minus />
