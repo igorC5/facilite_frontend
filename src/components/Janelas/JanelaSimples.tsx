@@ -16,6 +16,7 @@ export interface IJanelaSimples {
   minimizada?: boolean;
   zIndexJanela: number;
   setZIndexJanela: any;
+  children: any;
 }
 
 export default function JanelaSimples({
@@ -26,6 +27,7 @@ export default function JanelaSimples({
   minimizada,
   zIndexJanela,
   setZIndexJanela,
+  children,
 }: IJanelaSimples) {
   if (!open) return null;
 
@@ -98,6 +100,7 @@ export default function JanelaSimples({
         // }}
         style={{ pointerEvents: 'auto' }}
         // cancel=".conteudo"
+        cancel=".dinamic-table, .conteudo"
       >
         <Flex 
           w="100%"
@@ -156,11 +159,16 @@ export default function JanelaSimples({
               <X />
             </Button>
           </Flex>
-          <Flex className="conteudo" bg="white" flex="1" cursor="default">
-            <Text>teste</Text>
-            <Button>
-              e
-            </Button>
+          <Flex 
+            className="conteudo" 
+            bg={Colors.bg}
+            flex="1"
+            cursor="default" 
+            p="4" 
+            flexDir="column" 
+            overflow="auto"
+          >
+            {children}
           </Flex>
         </Flex>
       </Rnd>

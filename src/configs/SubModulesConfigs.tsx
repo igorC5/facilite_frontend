@@ -1,5 +1,7 @@
 import JanelaSimples from "@/components/Janelas/JanelaSimples";
 import { useColorModeValue } from "@/components/ui/color-mode";
+import Produtos from "@/janelas/Estoque/Produtos/Produtos";
+import ClientesFornecedores from "@/janelas/Vendas/ClientesFornecedores/ClientesFornecedores";
 import { Banknote, Calculator, ChartNoAxesCombined, HandCoins, Package, ScrollText } from "lucide-react";
 
 export function useModulos(){
@@ -21,18 +23,19 @@ export function useModulos(){
           id: 1,
           texto: "Clientes / Fornecedores",
           janelaId: 1,
-          componente: JanelaSimples,
+          componente: ClientesFornecedores,
           // path: "/Vendas/Clientes-Fornecedores/Clientes",
         },
         {
           id: 2,
           texto: "Pedidos / Novo Pedido",
-          janelaId: 2,
-          componente: JanelaSimples,
+          // janelaId: 2,
+          // componente: JanelaSimples,
         },
         {
           id: 3,
           texto: "Notas Fiscais (NFE e NFC)",
+          // janelaId: 3,
         },
       ]
     },
@@ -45,14 +48,17 @@ export function useModulos(){
         {
           id: 1,
           texto: "Contas a Pagar/Receber",
+          // janelaId: 4,
         },
         {
           id: 2,
           texto: "Fluxo de Caixa",
+          // janelaId: 5,
         },
         {
           id: 3,
           texto: "Conciliação Bancaria",
+          // janelaId: 6,
         },
       ]
     },
@@ -65,6 +71,8 @@ export function useModulos(){
         {
           id: 1,
           texto: "Produtos",
+          janelaId: 7,
+          componente: Produtos
         },
         {
           id: 2,

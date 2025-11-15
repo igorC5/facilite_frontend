@@ -1,14 +1,14 @@
+import BottomBar from "@/components/BottomBar/BottomBar";
+import type { IJanelaSimples } from "@/components/Janelas/JanelaSimples";
 import { useColorModeValue } from "@/components/ui/color-mode";
+import { useModulos } from "@/configs/SubModulesConfigs";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button, Flex, SimpleGrid } from "@chakra-ui/react";
 import { HandCoins } from "lucide-react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CardModulo from "./Components/CardModulo";
-import { useEffect, useState } from "react";
 import CardSelecionado from "./Components/CardSelecionado";
-import { useModulos } from "@/configs/SubModulesConfigs";
-import BottomBar from "@/components/BottomBar/BottomBar";
-import type { IJanelaSimples } from "@/components/Janelas/JanelaSimples";
 
 interface IJanelas {
   id: number; 

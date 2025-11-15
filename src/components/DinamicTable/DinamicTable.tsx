@@ -7,11 +7,13 @@ import { LucideChevronLeft, LucideChevronRight, LucideChevronsLeft, LucideChevro
 interface IDinamicTable {
   colunas: any[];
   data: any[];
+  maxH: any;
 }
 
 const DinamicTable: React.FC<IDinamicTable> = ({
   colunas,
   data,
+  maxH,
 }) => {
   const bg = useColorModeValue("white", "gray.700");
   const color = useColorModeValue("gray.800", "gray.100");
@@ -24,6 +26,9 @@ const DinamicTable: React.FC<IDinamicTable> = ({
     <Box
       w="100%" 
       h="100%"
+      maxH={maxH}
+      className="dinamic-table"
+      overflow="auto"  
       tableLayout="fixed" 
       bg={bg}
       borderWidth="2px" 
@@ -72,7 +77,7 @@ const DinamicTable: React.FC<IDinamicTable> = ({
         justify="space-between"
         align="center"
       >
-        <Text>Total Clientes: 232</Text>
+        <Text>Total: {data.length}</Text>
         <Flex flexDir="row" align="center">
           <Text>Página:</Text>
           <Input 

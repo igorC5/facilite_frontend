@@ -1,14 +1,21 @@
 import DinamicTable from "@/components/DinamicTable/DinamicTable";
-import ModulePage from "@/components/ModulePage/ModulePage";
-import { useColorModeValue } from "@/components/ui/color-mode";
+import JanelaSimples, { type IJanelaSimples } from "@/components/Janelas/JanelaSimples";
 import { Tooltip } from "@/components/ui/tooltip";
-import { Button, Flex, Heading, Icon, IconButton, Input, InputGroup, Spacer } from "@chakra-ui/react"
+import { useColors } from "@/styles/cores";
+import { Button, Flex, Icon, IconButton, Input, InputGroup, Spacer, Text } from "@chakra-ui/react";
 import { Funnel, LucideEdit, LucideTrash, PlusCircle, Search } from "lucide-react";
 import React from "react";
 
-const Clientes = () => {
-  const bgComponentes = useColorModeValue("white", "gray.700");
-  const color = useColorModeValue("gray.800", "gray.100");
+const ClientesFornecedores: React.FC<IJanelaSimples> = ({
+  janelaInfo,
+  open, 
+  fecharJanela,
+  minimiza,
+  minimizada,
+  zIndexJanela,
+  setZIndexJanela,
+}) => {
+  const Colors = useColors();
 
   const ColunasClientes = React.useMemo(
     () => [
@@ -78,7 +85,6 @@ const Clientes = () => {
   )
 
   const getClientesData = () => {
-    
     const dataMockada = [
       {
         id: "1",
@@ -232,48 +238,59 @@ const Clientes = () => {
   }
 
   return (
-    <ModulePage 
-      paginas={[
-        { nome: 'Clientes', url: '/Vendas/Clientes-Fornecedores/Clientes' },
-        { nome: 'Fornecedores', url: '/Vendas/Clientes-Fornecedores/Fornecedores' },
-      ]}
+    <JanelaSimples
+      janelaInfo={janelaInfo}
+      open={open}
+      fecharJanela={fecharJanela}
+      minimiza={minimiza}
+      minimizada={minimizada}
+      zIndexJanela={zIndexJanela}
+      setZIndexJanela={setZIndexJanela}
     >
-      <Heading fontSize="2xl" py="4">Clientes</Heading>
-      <Flex h="50px" mb="3">
-        <InputGroup w="500px"
-          h="100%"
-          startElement={
-            <Flex h="100%" align="center"> 
-              <Icon as={Search} />
-            </Flex>
-          }
-        >
-          <Input 
-            placeholder="Digite aqui"
-            bg={bgComponentes} 
-            borderWidth={2} 
-            w="500px"
+      <Flex h="50px" w="100%">
+        <Flex maxW="50%">
+          <InputGroup
             h="100%"
-            mr="2"
-            rounded="2xl"
-          />
-        </InputGroup>
-        <Tooltip content="Filtros" openDelay={0} closeDelay={100}>
-          <IconButton rounded="2xl" w="50px" h="100%" bg={bgComponentes} borderWidth={2} variant="outline">
-            <Icon as={Funnel} color={color} />
-          </IconButton>
-        </Tooltip>
+            startElement={
+              <Flex h="100%" align="center"> 
+                <Icon as={Search} />
+              </Flex>
+            }
+          >
+            <Input
+              placeholder="Digite aqui"
+              bg={Colors.bgComponentes} 
+              borderWidth={2} 
+              w="500px"
+              h="100%"
+              mr="2"
+              rounded="2xl"
+            />
+          </InputGroup>
+          <Tooltip content="Filtros" openDelay={0} closeDelay={100}>
+            <IconButton rounded="2xl" w="50px" h="100%" bg={Colors.bgComponentes} borderWidth={2} variant="outline">
+              <Icon as={Funnel} color={Colors.textColor} />
+            </IconButton>
+          </Tooltip>
+        </Flex>
         <Spacer />
         <Button bg="blue.600" color="white">
           <PlusCircle /> Novo Cliente
         </Button>
       </Flex>
-      <DinamicTable
-        colunas={ColunasClientes}
-        data={getClientesData() ? getClientesData() : []}
-      />
-    </ModulePage> 
+      <Flex 
+        mt="3" 
+        maxH={450}
+        w="100%" 
+      >
+        <DinamicTable
+          maxH="100%"
+          colunas={ColunasClientes}
+          data={getClientesData() ? getClientesData() : []}
+        />
+      </Flex>
+    </JanelaSimples>
   )
 }
 
-export default Clientes;
+export default ClientesFornecedores;
