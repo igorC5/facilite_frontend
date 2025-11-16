@@ -19,9 +19,10 @@ type ProdutoFormData = z.infer<typeof produtoSchema>;
 
 interface ICriarProduto {
   setModoTela: any;
+  refetch: any;
 }
 
-const CriarProduto: React.FC<ICriarProduto> = ({ setModoTela }) => {
+const CriarProduto: React.FC<ICriarProduto> = ({ setModoTela, refetch }) => {
   const {
     register,
     handleSubmit,
@@ -46,8 +47,8 @@ const CriarProduto: React.FC<ICriarProduto> = ({ setModoTela }) => {
       nome: data.nome,
       preco_venda: data.precoVenda,
     })
-    console.log(response);
     
+    refetch();
     setEnviando(false);
     setModoTela(1);
   };

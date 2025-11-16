@@ -1,13 +1,13 @@
-import { api } from "@/api";
 import DinamicTable from "@/components/DinamicTable/DinamicTable";
 import JanelaSimples, { type IJanelaSimples } from "@/components/Janelas/JanelaSimples";
 import { Tooltip } from "@/components/ui/tooltip";
+import { useProdutos } from "@/hooks/useProdutos";
 import { useColors } from "@/styles/cores";
+import { formatarReal } from "@/utils/FormatarReal";
 import { Button, Flex, Icon, IconButton, Input, InputGroup, Spacer, Text } from "@chakra-ui/react";
 import { Funnel, PlusCircle, Search } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import CriarProduto from "./CriarProduto";
-import { formatarReal } from "@/utils/FormatarReal";
 
 const Produtos: React.FC<IJanelaSimples> = ({
   janelaInfo,
@@ -18,23 +18,21 @@ const Produtos: React.FC<IJanelaSimples> = ({
   zIndexJanela,
   setZIndexJanela,
 }) => {
+
+  // estilos
   const Colors = useColors();
-  const [data, setData] = useState([]);
+
+  // estados
   const [modoTela, setModoTela] = useState<
     1 // listagem
     | 2 // novo produto
   >(1); // valor inicial
   
-  useEffect(() => {
-    async function teste() {
-      const response = await api.get('/produtos');
-      console.log(response.data);
-      setData(response.data)
-    }
-    teste()
-  }, [])
-  
-  const ColunasClientes = React.useMemo(
+  // dados
+  const { data: produtosData, refetch, isLoading} = useProdutos();
+
+  // config colunas
+  const ColunasProdutos = React.useMemo(
     () => [
       {
         header: 'CÓDIGO',
@@ -47,14 +45,14 @@ const Produtos: React.FC<IJanelaSimples> = ({
       {
         header: 'VALOR VENDA',
         acesso: 'preco_venda',
-        cell: (row) => {
+        cell: (row: any) => {
           return (
             <Text>{formatarReal(row.preco_venda)}</Text>
           )
         }
       },
     ],
-    [data]
+    [produtosData]
   )
 
   return (
@@ -112,14 +110,17 @@ const Produtos: React.FC<IJanelaSimples> = ({
           >
             <DinamicTable 
               maxH="100%"
-              data={data}
-              colunas={ColunasClientes}
+              data={produtosData || []}
+              colunas={ColunasProdutos}
             />
           </Flex>
         </>
       )}
       {modoTela == 2 && (
-        <CriarProduto setModoTela={setModoTela} />
+        <CriarProduto 
+          setModoTela={setModoTela} 
+          refetch={refetch}
+        />
       )}
     </JanelaSimples>
   )

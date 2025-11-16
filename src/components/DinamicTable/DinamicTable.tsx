@@ -63,8 +63,8 @@ const DinamicTable: React.FC<IDinamicTable> = ({
             </Table.Row>
           ))}
           <Show when={!data || data.length == 0}>
-            <Table.Row>
-              <Table.Cell borderWidth={0}>Sem itens</Table.Cell>
+            <Table.Row bg="none">
+              <Table.Cell borderWidth={0} bg="none">Sem itens</Table.Cell>
             </Table.Row>
           </Show>
         </Table.Body>
