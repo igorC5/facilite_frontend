@@ -2,18 +2,20 @@ import { Box, Button, Flex, Icon, Input, Show, Table, Text } from "@chakra-ui/re
 import type React from "react";
 import { useColorModeValue } from "../ui/color-mode";
 import { Tooltip } from "../ui/tooltip";
-import { LucideChevronLeft, LucideChevronRight, LucideChevronsLeft, LucideChevronsRight } from "lucide-react";
+import { LucideChevronLeft, LucideChevronRight, LucideChevronsLeft, LucideChevronsRight, RefreshCcw } from "lucide-react";
 
 interface IDinamicTable {
   colunas: any[];
   data: any[];
   maxH: any;
+  refreshData?: any;
 }
 
 const DinamicTable: React.FC<IDinamicTable> = ({
   colunas,
   data,
   maxH,
+  refreshData,
 }) => {
   const bg = useColorModeValue("white", "gray.700");
   const color = useColorModeValue("gray.800", "gray.100");
@@ -35,8 +37,9 @@ const DinamicTable: React.FC<IDinamicTable> = ({
       py="2"
       px="4"
       rounded="2xl"
+      flexDir='column'
     >
-      <Table.Root w="100%" bg={bg}>
+      <Table.Root w="100%" bg={bg} mb="4">
         <Table.Header bg={bg} >
           <Table.Row >
             {colunas?.map(coluna => {
@@ -71,7 +74,7 @@ const DinamicTable: React.FC<IDinamicTable> = ({
       </Table.Root>
       <Flex 
         flex="1" 
-        h="10%" 
+        h="10%"
         py="2"
         px="4"
         justify="space-between"

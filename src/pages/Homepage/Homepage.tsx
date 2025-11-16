@@ -55,15 +55,18 @@ const Homepage = () => {
               <SimpleGrid
                 w="100%" 
                 columns={3} 
-                gap="40px"
+                columnGap="40px"
+                rowGap="40px"
                 p="6"
+                alignItems="start" 
+                alignContent="start"
               >
                 {modulos.map(mod => {
                   return (
                     <CardModulo 
                       titulo={mod.titulo}
                       cor={mod.cor}
-                      icon={mod.icon ? mod.icon : <HandCoins size="120" strokeWidth={1.5} />}
+                      icon={mod.icon}
                       selecionado={modSelecionado === mod.id}
                       acao={() => HandleModSelecionado(mod.id)}
                     />

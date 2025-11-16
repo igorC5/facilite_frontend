@@ -111,7 +111,7 @@ export default function JanelaSimples({
           flexDir="column"
         >
           <Flex flexDir="row" h="30px" bg={Colors.borderColor}>
-            <Text>{janelaInfo.texto}</Text>
+            <Text pl="2">{janelaInfo.texto}</Text>
             <Spacer />
             <Button 
               h="30px"

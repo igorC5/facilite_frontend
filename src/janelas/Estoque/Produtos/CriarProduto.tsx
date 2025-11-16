@@ -8,6 +8,7 @@ import { z } from "zod";
 import ValorInput from "@/components/Inputs/ValorInput";
 import { api } from "@/api";
 import { useState } from "react";
+import { verificaErroTab } from "@/utils/VerificaErroTab";
 
 // Schema de validação
 const produtoSchema = z.object({
@@ -35,6 +36,12 @@ const CriarProduto: React.FC<ICriarProduto> = ({ setModoTela, refetch }) => {
       precoVenda: 0,
     },
   });
+
+  // tabs errors
+  const erroGeral = !!errors.nome;
+  const erroComercial = !!errors.precoVenda;
+
+  // estados
   const [enviando, setEnviando] = useState(false);
 
   const onSubmit = async (data: ProdutoFormData) => {
@@ -87,8 +94,13 @@ const CriarProduto: React.FC<ICriarProduto> = ({ setModoTela, refetch }) => {
           variant="enclosed"
           mt="3"
         >
-          <Tabs.List>
-            <Tabs.Trigger value="tab-geral">Geral</Tabs.Trigger>
+          <Tabs.List gap={2}>
+            <Tabs.Trigger  
+              value="tab-geral"
+              {...verificaErroTab(erroGeral)}
+            >
+                Geral
+            </Tabs.Trigger>
             <Tabs.Trigger value="tab-fiscal">Fiscal</Tabs.Trigger>
             <Tabs.Trigger value="tab-comercial">Comercial</Tabs.Trigger>
             <Tabs.Trigger value="tab-estoque">Estoque</Tabs.Trigger>
@@ -114,7 +126,10 @@ const CriarProduto: React.FC<ICriarProduto> = ({ setModoTela, refetch }) => {
             </Flex>
           </Tabs.Content>
 
-          <Tabs.Content value="tab-comercial">
+          <Tabs.Content 
+            value="tab-comercial"
+            {...verificaErroTab(erroComercial)}
+          >
             <Flex w="40%" flexDir="column">
               <Text fontSize="sm" fontWeight="medium" color="gray.500">
                 dados obrigatórios

@@ -1,23 +1,29 @@
-import JanelaSimples from "@/components/Janelas/JanelaSimples";
 import { useColorModeValue } from "@/components/ui/color-mode";
 import Produtos from "@/janelas/Estoque/Produtos/Produtos";
 import ClientesFornecedores from "@/janelas/Vendas/ClientesFornecedores/ClientesFornecedores";
 import { Banknote, Calculator, ChartNoAxesCombined, HandCoins, Package, ScrollText } from "lucide-react";
 
 export function useModulos(){
-  const vendasColor = useColorModeValue("green.500", "green.700");
-  const financeiroColor = useColorModeValue("yellow.400", "yellow.700");
-  const estoqueColor = useColorModeValue("blue.500", "blue.800");
-  const fiscalColor = useColorModeValue("orange.400", "orange.700");
-  const contadorColor = useColorModeValue("cyan.400", "cyan.700");
-  const estatisticasColor = useColorModeValue("purple.400", "purple.800");
+  const vendasColor1 = useColorModeValue("green.400", "green.600");
+  const vendasColor2 = useColorModeValue("green.600", "green.700");
+  const financeiroColor1 = useColorModeValue("yellow.400", "yellow.600");
+  const financeiroColor2 = useColorModeValue("yellow.600", "yellow.700");
+  const estoqueColor1 = useColorModeValue("blue.400", "blue.600");
+  const estoqueColor2 = useColorModeValue("blue.600", "blue.700");
+  const fiscalColor1 = useColorModeValue("orange.400", "orange.600");
+  const fiscalColor2 = useColorModeValue("orange.600", "orange.700");
+  const contadorColor1 = useColorModeValue("cyan.400", "cyan.600");
+  const contadorColor2 = useColorModeValue("cyan.600", "cyan.700");
+  const estatisticasColor1 = useColorModeValue("purple.400", "purple.700");
+  const estatisticasColor2 = useColorModeValue("purple.600", "purple.800");
 
   return [
     {
       id: 1,
       titulo: 'Vendas',
-      cor: vendasColor,
-      icon: <HandCoins size="120" strokeWidth={1.5} />,
+      cor: [vendasColor1, vendasColor2],
+      // icon: <HandCoins size="120" strokeWidth={1.5} />,
+      icon: '/public/icones/vendas.webp',
       opcoes: [
         {
           id: 1,
@@ -42,8 +48,8 @@ export function useModulos(){
     {
       id: 2,
       titulo: 'Financeiro',
-      cor: financeiroColor,
-      icon: <Banknote size="120" strokeWidth={1.5} />,
+      cor: [financeiroColor1, financeiroColor2],
+      icon: '/public/icones/financeiro.png',
       opcoes: [
         {
           id: 1,
@@ -65,8 +71,8 @@ export function useModulos(){
     {
       id: 3,
       titulo: 'Estoque',
-      cor: estoqueColor,
-      icon: <Package size="120" strokeWidth={1.5} />,
+      cor: [estoqueColor1, estoqueColor2],
+      icon: '/public/icones/estoque.png',
       opcoes: [
         {
           id: 1,
@@ -88,8 +94,8 @@ export function useModulos(){
     {
       id: 4,
       titulo: 'Fiscal',
-      cor: fiscalColor,
-      icon: <ScrollText size="120" strokeWidth={1.5} />,
+      cor: [fiscalColor1, fiscalColor2],
+      icon: '/public/icones/fiscal.png',
       opcoes: [
         {
           id: 1,
@@ -108,14 +114,14 @@ export function useModulos(){
     {
       id: 5,
       titulo: 'Contador',
-      cor: contadorColor,
-      icon: <Calculator size="120" strokeWidth={1.5} />,
+      icon: '/public/icones/contador.png',
+      cor: [contadorColor1, contadorColor2],
     },
     {
       id: 6,
       titulo: 'Estatísticas',
-      cor: estatisticasColor,
-      icon: <ChartNoAxesCombined size="120" strokeWidth={1.5} />,
+      icon: '/public/icones/estatisticas.png',
+      cor: [estatisticasColor1, estatisticasColor2],
     },
   ];
 }

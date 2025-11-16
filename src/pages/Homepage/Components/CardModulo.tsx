@@ -1,10 +1,10 @@
 import { useColorModeValue } from "@/components/ui/color-mode"
-import { Flex, Icon, Text } from "@chakra-ui/react"
+import { Flex, Icon, Image, Text } from "@chakra-ui/react"
 import type React from "react"
 
 interface ICardModulo {
   titulo?: string,
-  cor?: string,
+  cor: [string, string],
   icon?: any,
   selecionado?: boolean,
   acao?: any;
@@ -22,9 +22,11 @@ const CardModulo: React.FC<ICardModulo> = ({
 
   return (
     <Flex 
-      bg={cor ? cor :"red.500"}
+      // bg={cor ? cor :"red.500"}
+      bgGradient='to-b'
+      gradientFrom={cor[0]}
+      gradientTo={cor[1]}
       rounded="2xl"
-      h="100%" 
       align="center" 
       flexDir="column"
       cursor="pointer"
@@ -33,12 +35,20 @@ const CardModulo: React.FC<ICardModulo> = ({
       outlineStyle={selecionado ? "solid" : "none"}
       onClick={acao}
       boxShadow={`8px 8px 0px ${sombraColor}`}
- 
+      h="250px"
     >
-      <Icon color={color} mt="10%">1
+      {/* <Icon color={color} mt="10%">1
         {icon && icon}
-      </Icon>
-      <Flex mt="20%">
+      </Icon> */}
+      {
+        icon && (
+          <Image 
+            w="200px"
+            src={icon}
+          />
+        )
+      }
+      <Flex>
         <Text 
           fontSize={30} 
           color={color}
