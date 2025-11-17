@@ -5,9 +5,11 @@ import { useProdutos } from "@/hooks/useProdutos";
 import { useColors } from "@/styles/cores";
 import { formatarReal } from "@/utils/FormatarReal";
 import { Button, Flex, Icon, IconButton, Input, InputGroup, Spacer, Text } from "@chakra-ui/react";
-import { Funnel, PlusCircle, Search } from "lucide-react";
+import { Edit, Funnel, LucideTrash, PlusCircle, Search, Trash } from "lucide-react";
 import React, { useState } from "react";
 import CriarProduto from "./CriarProduto";
+import { api } from "@/api";
+import EditarProduto from "./EditarProduto";
 
 const Produtos: React.FC<IJanelaSimples> = ({
   janelaInfo,
@@ -26,10 +28,26 @@ const Produtos: React.FC<IJanelaSimples> = ({
   const [modoTela, setModoTela] = useState<
     1 // listagem
     | 2 // novo produto
+    | 3 // editar produto
   >(1); // valor inicial
+  const [produtoSelecionado, setProdutoSelecionado] = useState<any>(null);
   
   // dados
   const { data: produtosData, refetch, isLoading} = useProdutos();
+
+
+  const handleDeleteProduto = (id: string) => {
+    async function deletarProduto() {
+      const response = await api.delete(`/produtos/${id}`);
+      await refetch();
+    }
+    deletarProduto();
+  }
+
+  const handleEditaProduto = (id: string) => {
+    setProdutoSelecionado(id);
+    setModoTela(3);
+  }
 
   // config colunas
   const ColunasProdutos = React.useMemo(
@@ -51,6 +69,39 @@ const Produtos: React.FC<IJanelaSimples> = ({
           )
         }
       },
+      {
+        header: 'AÇÕES',
+        acesso: 'acoes',
+        hCell: {textAlign: 'center', width: '0px'},
+        cell: (row) => {
+          return (
+            <Flex w="max-content">
+              <Tooltip content="Editar produto" openDelay={0}>
+                <Button 
+                  h="24px" 
+                  bg="none" 
+                  px="0" 
+                  py={4}
+                  onClick={() => handleEditaProduto(row.id)}
+                >
+                  <Icon as={Edit} color="blue.500" />
+                </Button>
+              </Tooltip>
+              <Tooltip content="Excluir produto" openDelay={0}>
+                <Button 
+                  h="24px" 
+                  bg="none" 
+                  px="0" 
+                  py={4}
+                  onClick={() => handleDeleteProduto(row.id)}
+                >
+                  <Icon as={LucideTrash} color="red.500" />
+                </Button>
+              </Tooltip>
+            </Flex>
+          )
+        }
+      }
     ],
     [produtosData]
   )
@@ -120,6 +171,13 @@ const Produtos: React.FC<IJanelaSimples> = ({
         <CriarProduto 
           setModoTela={setModoTela} 
           refetch={refetch}
+        />
+      )}
+      {modoTela == 3 && (
+        <EditarProduto 
+          setModoTela={setModoTela} 
+          refetch={refetch}
+          produtoId={produtoSelecionado}
         />
       )}
     </JanelaSimples>

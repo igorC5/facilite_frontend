@@ -2,7 +2,7 @@ import DinamicTable from "@/components/DinamicTable/DinamicTable";
 import ModulePage from "@/components/ModulePage/ModulePage";
 import { useColorModeValue } from "@/components/ui/color-mode";
 import { Tooltip } from "@/components/ui/tooltip";
-import { Button, Flex, Heading, Icon, IconButton, Input, InputGroup, Spacer } from "@chakra-ui/react"
+import { Button, Flex, Heading, Icon, IconButton, Input, InputGroup, Spacer } from "@chakra-ui/react";
 import { Funnel, LucideEdit, LucideTrash, PlusCircle, Search } from "lucide-react";
 import React from "react";
 
