@@ -1,7 +1,6 @@
 import { useColorModeValue } from "@/components/ui/color-mode";
 import Produtos from "@/janelas/Estoque/Produtos/Produtos";
 import ClientesFornecedores from "@/janelas/Vendas/ClientesFornecedores/ClientesFornecedores";
-import { Banknote, Calculator, ChartNoAxesCombined, HandCoins, Package, ScrollText } from "lucide-react";
 
 export function useModulos(){
   const vendasColor1 = useColorModeValue("green.400", "green.600");
@@ -119,7 +118,7 @@ export function useModulos(){
     },
     {
       id: 6,
-      titulo: 'Estatísticas',
+      titulo: 'Análise',
       icon: '/public/icones/estatisticas.png',
       cor: [estatisticasColor1, estatisticasColor2],
     },

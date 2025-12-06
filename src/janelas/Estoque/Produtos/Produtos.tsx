@@ -61,6 +61,14 @@ const Produtos: React.FC<IJanelaSimples> = ({
         acesso: 'nome',
       },
       {
+        header: 'NCM',
+        acesso: 'ncm',
+      },
+      {
+        header: 'UNIDADE',
+        acesso: 'unidade',
+      },
+      {
         header: 'VALOR VENDA',
         acesso: 'preco_venda',
         cell: (row: any) => {
