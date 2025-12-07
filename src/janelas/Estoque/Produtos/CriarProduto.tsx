@@ -63,7 +63,6 @@ const CriarProduto: React.FC<ICriarProduto> = ({ setModoTela, refetch }) => {
         ncm: data.ncm,
         preco_venda: data.precoVenda,
       })
-      console.log(response.data);
 
       refetch();
       setModoTela(1);

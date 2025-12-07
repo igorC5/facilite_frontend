@@ -4,9 +4,10 @@ import { Tooltip } from "@/components/ui/tooltip";
 import { useColors } from "@/styles/cores";
 import { Button, Flex, Icon, IconButton, Input, InputGroup, Spacer, Text } from "@chakra-ui/react";
 import { Funnel, LucideEdit, LucideTrash, PlusCircle, Search } from "lucide-react";
-import React from "react";
+import React, { useState } from "react";
+import CriarCliente from "./CriarCliente";
 
-const ClientesFornecedores: React.FC<IJanelaSimples> = ({
+const Clientes: React.FC<IJanelaSimples> = ({
   janelaInfo,
   open, 
   fecharJanela,
@@ -15,7 +16,16 @@ const ClientesFornecedores: React.FC<IJanelaSimples> = ({
   zIndexJanela,
   setZIndexJanela,
 }) => {
+
+  // estilos
   const Colors = useColors();
+
+  // estados
+  const [modoTela, setModoTela] = useState<
+    1 // listagem
+    | 2 // novo cliente
+    | 3 // editar cliente
+  >(1); // valor inicial
 
   const ColunasClientes = React.useMemo(
     () => [
@@ -219,21 +229,6 @@ const ClientesFornecedores: React.FC<IJanelaSimples> = ({
     ]
 
     const rows: any[] = [];
-    dataMockada?.map(cliente => {
-      rows.push({
-        id: cliente.id,
-        nome: cliente.nome,
-        tipo: cliente.tipo,
-        cpf_cnpj: cliente.cpf_cnpj,
-        ie: cliente.ie,
-        cep: cliente.cep,
-        cidade: cliente.cidade,
-        bairro: cliente.bairro,
-        rua: cliente.rua,
-        pais: cliente.pais,
-        telefone: cliente.telefone,
-      })
-    })
     return rows;
   }
 
@@ -247,50 +242,59 @@ const ClientesFornecedores: React.FC<IJanelaSimples> = ({
       zIndexJanela={zIndexJanela}
       setZIndexJanela={setZIndexJanela}
     >
-      <Flex h="50px" w="100%">
-        <Flex maxW="50%">
-          <InputGroup
-            h="100%"
-            startElement={
-              <Flex h="100%" align="center"> 
-                <Icon as={Search} />
-              </Flex>
-            }
+      {modoTela === 1 && (
+        <>
+          <Flex h="50px" w="100%">
+            <Flex maxW="50%">
+              <InputGroup
+                h="100%"
+                startElement={
+                  <Flex h="100%" align="center"> 
+                    <Icon as={Search} />
+                  </Flex>
+                }
+              >
+                <Input
+                  placeholder="Digite aqui"
+                  bg={Colors.bgComponentes} 
+                  borderWidth={2} 
+                  w="500px"
+                  h="100%"
+                  mr="2"
+                  rounded="2xl"
+                />
+              </InputGroup>
+              <Tooltip content="Filtros" openDelay={0} closeDelay={100}>
+                <IconButton rounded="2xl" w="50px" h="100%" bg={Colors.bgComponentes} borderWidth={2} variant="outline">
+                  <Icon as={Funnel} color={Colors.textColor} />
+                </IconButton>
+              </Tooltip>
+            </Flex>
+            <Spacer />
+            <Button bg="blue.600" color="white" onClick={() => setModoTela(2)}>
+              <PlusCircle /> Novo Cliente
+            </Button>
+          </Flex>
+          <Flex 
+            mt="3" 
+            maxH={450}
+            w="100%" 
           >
-            <Input
-              placeholder="Digite aqui"
-              bg={Colors.bgComponentes} 
-              borderWidth={2} 
-              w="500px"
-              h="100%"
-              mr="2"
-              rounded="2xl"
+            <DinamicTable
+              maxH="100%"
+              colunas={ColunasClientes}
+              data={getClientesData() ? getClientesData() : []}
             />
-          </InputGroup>
-          <Tooltip content="Filtros" openDelay={0} closeDelay={100}>
-            <IconButton rounded="2xl" w="50px" h="100%" bg={Colors.bgComponentes} borderWidth={2} variant="outline">
-              <Icon as={Funnel} color={Colors.textColor} />
-            </IconButton>
-          </Tooltip>
-        </Flex>
-        <Spacer />
-        <Button bg="blue.600" color="white">
-          <PlusCircle /> Novo Cliente
-        </Button>
-      </Flex>
-      <Flex 
-        mt="3" 
-        maxH={450}
-        w="100%" 
-      >
-        <DinamicTable
-          maxH="100%"
-          colunas={ColunasClientes}
-          data={getClientesData() ? getClientesData() : []}
+          </Flex>
+        </>
+      )}
+      {modoTela === 2 && (
+        <CriarCliente 
+          setModoTela={setModoTela}
         />
-      </Flex>
+      )}
     </JanelaSimples>
   )
 }
 
-export default ClientesFornecedores;
+export default Clientes;

@@ -1,6 +1,6 @@
 import { useColorModeValue } from "@/components/ui/color-mode";
 import Produtos from "@/janelas/Estoque/Produtos/Produtos";
-import ClientesFornecedores from "@/janelas/Vendas/ClientesFornecedores/ClientesFornecedores";
+import Clientes from "@/janelas/Vendas/Clientes/Clientes";
 
 export function useModulos(){
   const vendasColor1 = useColorModeValue("green.400", "green.600");
@@ -26,9 +26,9 @@ export function useModulos(){
       opcoes: [
         {
           id: 1,
-          texto: "Clientes / Fornecedores",
+          texto: "Clientes",
           janelaId: 1,
-          componente: ClientesFornecedores,
+          componente: Clientes,
           // path: "/Vendas/Clientes-Fornecedores/Clientes",
         },
         {

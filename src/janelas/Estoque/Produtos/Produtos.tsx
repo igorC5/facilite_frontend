@@ -171,6 +171,7 @@ const Produtos: React.FC<IJanelaSimples> = ({
               maxH="100%"
               data={produtosData || []}
               colunas={ColunasProdutos}
+              isLoading={isLoading}
             />
           </Flex>
         </>

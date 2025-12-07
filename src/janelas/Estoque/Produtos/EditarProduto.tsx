@@ -1,6 +1,6 @@
 import TextInput from "@/components/Inputs/TextInput";
-import { Button, Flex, Tabs, Text } from "@chakra-ui/react";
-import { CircleCheck, CircleX } from "lucide-react";
+import { Button, Flex, Spinner, Tabs, Text } from "@chakra-ui/react";
+import { AlertCircle, CircleCheck, CircleX } from "lucide-react";
 import type React from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -9,11 +9,15 @@ import ValorInput from "@/components/Inputs/ValorInput";
 import { api } from "@/api";
 import { useEffect, useState } from "react";
 import { verificaErroTab } from "@/utils/VerificaErroTab";
+import SelectInput from "@/components/Inputs/SelectInput";
+import { toaster } from "@/components/ui/toaster";
 
 // Schema de validação
 const produtoSchema = z.object({
   nome: z.string().min(3, "Nome deve ter no mínimo 3 caracteres"),
   precoVenda: z.number().min(0, "Preço não pode ser negativo"),
+  ncm: z.string().regex(/^\d{8}$/, "NCM deve conter exatamente 8 dígitos numéricos"),
+  unidade: z.string().min(1, "Unidade obrigatória")
 });
 
 type ProdutoFormData = z.infer<typeof produtoSchema>;
@@ -36,11 +40,15 @@ const EditarProduto: React.FC<IEditarProduto> = ({ setModoTela, refetch, produto
     defaultValues: {
       nome: '',
       precoVenda: 0,
+      ncm: "",
+      unidade: "",
     },
   });
 
   // tabs errors
-  const erroGeral = !!errors.nome;
+  const temErros = Object.keys(errors).length > 0; // qualquer erro
+  const erroGeral = !!errors.nome || !!errors.unidade;
+  const erroFiscal = !!errors.ncm;
   const erroComercial = !!errors.precoVenda;
 
   // estados
@@ -50,11 +58,12 @@ const EditarProduto: React.FC<IEditarProduto> = ({ setModoTela, refetch, produto
     async function loadProduto() {
       const response = await api.get(`/produtos/${produtoId}`);
       const produto = response.data;
-      console.log(produto)
       
       reset({
         nome: produto.nome,
         precoVenda: produto.preco_venda,
+        ncm: produto.ncm,
+        unidade: produto.unidade,
       })
     }
     loadProduto();
@@ -63,14 +72,39 @@ const EditarProduto: React.FC<IEditarProduto> = ({ setModoTela, refetch, produto
   const onSubmit = async (data: ProdutoFormData) => {
     setEnviando(true);
     if (enviando) return;
-    const response = await api.put(`/produtos/${produtoId}`, {
-      nome: data.nome,
-      preco_venda: data.precoVenda,
-    })
-    
-    refetch();
-    setEnviando(false);
-    setModoTela(1);
+    try {      
+      const response = await api.put(`/produtos/${produtoId}`, {
+        nome: data.nome,
+        preco_venda: data.precoVenda,
+        ncm: data.ncm,
+        unidade: data.unidade,
+      })
+
+      refetch();
+      setModoTela(1);
+
+      toaster.success({
+        title: 'Produto editado com sucesso!',
+        description: 'Visualize-o na tabela de produtos',
+        closable: true,
+      })
+    } catch (error: any) {
+      const mensagemBruta =
+        error?.response?.data?.message ??
+        error?.response?.data?.erro ??
+        error?.message ??
+        "Erro desconhecido.";
+
+      const mensagem =
+        Array.isArray(mensagemBruta) ? mensagemBruta.join(", ") : mensagemBruta;
+
+      toaster.error({
+        title: "Erro ao criar produto",
+        description: mensagem,
+      });
+    } finally {
+      setEnviando(false);
+    }
   };
 
   return (
@@ -94,10 +128,18 @@ const EditarProduto: React.FC<IEditarProduto> = ({ setModoTela, refetch, produto
             _hover={{ bg: "blue.500" }}
             disabled={isSubmitting}
           >
-            <CircleCheck /> salvar
+            {enviando ? <Spinner /> : <CircleCheck />}
+            salvar
           </Button>
 
-          <Text></Text>
+          { temErros && (
+            <Flex ml="2">
+              <AlertCircle color="tomato"/>
+              <Text fontWeight='medium' color="tomato"  ml="1">
+                Corrija os itens em destaque!
+              </Text>
+            </Flex>
+          )}
         </Flex>
 
         <Tabs.Root 
@@ -114,8 +156,18 @@ const EditarProduto: React.FC<IEditarProduto> = ({ setModoTela, refetch, produto
             >
                 Geral
             </Tabs.Trigger>
-            <Tabs.Trigger value="tab-fiscal">Fiscal</Tabs.Trigger>
-            <Tabs.Trigger value="tab-comercial">Comercial</Tabs.Trigger>
+            <Tabs.Trigger 
+              value="tab-fiscal"
+              {...verificaErroTab(erroFiscal)}
+            >
+              Fiscal
+            </Tabs.Trigger>
+            <Tabs.Trigger 
+              value="tab-comercial"
+              {...verificaErroTab(erroComercial)}
+            >
+              Comercial
+            </Tabs.Trigger>
             <Tabs.Trigger value="tab-estoque">Estoque</Tabs.Trigger>
             <Tabs.Trigger value="tab-fornecedores">Fornecedores</Tabs.Trigger>
           </Tabs.List>
@@ -136,6 +188,49 @@ const EditarProduto: React.FC<IEditarProduto> = ({ setModoTela, refetch, produto
                   {errors.nome.message}
                 </Text>
               )}
+
+              <Text fontWeight='medium'>Unidade de medida*</Text>
+              <SelectInput w="50%" {...register("unidade")}>
+                <option value=""></option>
+                <option value="UN">UN</option>
+                <option value="KG">KG</option>
+                <option value="CX">CX</option>
+              </SelectInput>
+              {errors.unidade && (
+                <Text fontSize="sm" color="red.500">
+                  {errors.unidade.message}
+                </Text>
+              )}
+            </Flex>
+          </Tabs.Content>
+
+          <Tabs.Content
+            value="tab-fiscal"
+          >
+            <Flex w="40%" flexDir="column">
+
+              <Text fontSize="sm" fontWeight="medium" color="gray.500">
+                dados obrigatórios
+              </Text>
+
+              <Text fontWeight='medium'>NCM*</Text>
+              <TextInput
+                w="50%"
+                inputMode='numeric'
+                maxLength={8}
+                placeholder="Digite aqui"
+                {...register("ncm", {
+                  onChange: (e) => {
+                    e.target.value = e.target.value.replace(/\D/g, ""); // remove qualquer não número
+                  },
+                })}
+              />
+              {errors.ncm && (
+                <Text fontSize="sm" color="red.500">
+                  {errors.ncm.message}
+                </Text>
+              )}
+
             </Flex>
           </Tabs.Content>
 
@@ -147,7 +242,7 @@ const EditarProduto: React.FC<IEditarProduto> = ({ setModoTela, refetch, produto
               <Text fontSize="sm" fontWeight="medium" color="gray.500">
                 dados obrigatórios
               </Text>
-              <Text>Preço de Venda</Text>
+              <Text fontWeight='medium'>Preço de Venda</Text>
               <Controller
                 name="precoVenda"
                 control={control}

@@ -80,8 +80,6 @@ const Homepage = () => {
                 titulo={modulos.find(mod => mod.id === modSelecionado)?.titulo}
                 opcoes={modulos.find(mod => mod.id === modSelecionado)?.opcoes}
                 addJanela={(janelaID, opcs) => {
-                  console.log(janelaID)
-                  console.log(opcs)
 
                   // desfazer minimizacao
                   if (janelas.some(jan => jan.id === janelaID && jan.minimizada)) {

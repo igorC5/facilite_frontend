@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Icon, Input, Show, Table, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Icon, Input, Show, Spinner, Table, Text } from "@chakra-ui/react";
 import type React from "react";
 import { useColorModeValue } from "../ui/color-mode";
 import { Tooltip } from "../ui/tooltip";
@@ -9,6 +9,7 @@ interface IDinamicTable {
   data: any[];
   maxH: any;
   refreshData?: any;
+  isLoading?: boolean;
 }
 
 const DinamicTable: React.FC<IDinamicTable> = ({
@@ -16,6 +17,7 @@ const DinamicTable: React.FC<IDinamicTable> = ({
   data,
   maxH,
   refreshData,
+  isLoading,
 }) => {
   const bg = useColorModeValue("white", "gray.700");
   const color = useColorModeValue("gray.800", "gray.100");
@@ -52,6 +54,15 @@ const DinamicTable: React.FC<IDinamicTable> = ({
           </Table.Row>
         </Table.Header>
         <Table.Body>
+          {isLoading && (
+            <Table.Row bg="none">
+              <Table.Cell colSpan={colunas.length} p="8">
+                <Flex justify="center" align="center" w="100%">
+                  <Spinner size="lg" borderWidth="3px" color="blue.500" />
+                </Flex>
+              </Table.Cell>
+            </Table.Row>
+          )}
           {data.map((linha, indexLinha) => (
             <Table.Row key={indexLinha}>
               {colunas.map(coluna => (
