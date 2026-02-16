@@ -110,7 +110,12 @@ export default function JanelaSimples({
           borderColor={Colors.borderColor} 
           flexDir="column"
         >
-          <Flex flexDir="row" h="30px" bg={Colors.borderColor}>
+          <Flex 
+            flexDir="row" 
+            h="30px" 
+            bg={Colors.borderColor}
+            onDoubleClick={mudarTamanho}
+          >
             <Text pl="2">{janelaInfo.texto}</Text>
             <Spacer />
             <Button 

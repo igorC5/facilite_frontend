@@ -3,10 +3,8 @@ import type { IJanelaSimples } from "@/components/Janelas/JanelaSimples";
 import { useColorModeValue } from "@/components/ui/color-mode";
 import { useModulos } from "@/configs/SubModulesConfigs";
 import { useAuth } from "@/contexts/AuthContext";
-import { Button, Flex, SimpleGrid } from "@chakra-ui/react";
-import { HandCoins } from "lucide-react";
+import { Button, Flex, Heading, SimpleGrid } from "@chakra-ui/react";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import CardModulo from "./Components/CardModulo";
 import CardSelecionado from "./Components/CardSelecionado";
 
@@ -18,10 +16,17 @@ interface IJanelas {
 
 const Homepage = () => {
   const { logout } = useAuth();
-  const navigate = useNavigate();
   const bg = useColorModeValue("gray.100", "gray.800");
   const modulos = useModulos();
   const [janelas, setJanelas] = useState<{ id: number; minimizada: boolean; zIndex: number}[]>([]);
+  const dadosLogin = (() => {
+    try {
+      const data = localStorage.getItem('usuario');
+      return data ? JSON.parse(data) : null;
+    } catch {
+      return null;
+    }
+  })();
 
   const [modSelecionado, setModSelecionado] = useState(0);
   const HandleModSelecionado = (num: number) => {
@@ -34,14 +39,13 @@ const Homepage = () => {
 
   const handleLogout = () => {
     logout();
-    navigate('/');
   }
 
   return (
     <>
       <Flex bg={bg} color="black" w="100vw" h="100vh" flexDir="column">
-        <Flex h="90vh" flexDir="column" w="100%">
-          <Flex>
+        <Flex h="92vh" flexDir="column" w="100%">
+          <Flex align="center">
             <Button 
               borderWidth="2px" 
               borderColor="black"
@@ -49,6 +53,9 @@ const Homepage = () => {
             >
               Sair
             </Button>
+            <Heading color="white" pl="2">
+              {dadosLogin?.nome_empresa} - {dadosLogin?.filial} - {dadosLogin?.usuario}
+            </Heading>
           </Flex>
           <Flex w="100%">
             <Flex w="60%">

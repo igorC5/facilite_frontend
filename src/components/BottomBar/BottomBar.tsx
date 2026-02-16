@@ -1,7 +1,8 @@
-import { Flex, Spacer, Text } from "@chakra-ui/react";
+import { Button, Flex, Heading, Spacer, Text } from "@chakra-ui/react";
 import { ColorModeButton, useColorModeValue } from "../ui/color-mode";
 import { useModulos } from "@/configs/SubModulesConfigs";
 import { useEffect, useState } from "react";
+import MenuIniciar from "../MenuIniciar/MenuIniciar";
 
 interface IBottomBar {
   janelas: {
@@ -44,12 +45,13 @@ const BottomBar: React.FC<IBottomBar> = ({janelas, focaJanela}) => {
       gradientFrom={bg1}
       // gradientVia='teal.500'
       gradientTo={bg2}
-      h="10vh" 
-      px="3"
+      h="8vh" 
+      // px="3"
       borderTopWidth="1px"
       align="center"
       justify="center"
     >
+      <MenuIniciar />
       {
         janelasBarra.map(janela => {
           return (
