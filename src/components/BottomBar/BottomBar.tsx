@@ -3,6 +3,7 @@ import { ColorModeButton, useColorModeValue } from "../ui/color-mode";
 import { useModulos } from "@/configs/SubModulesConfigs";
 import { useEffect, useState } from "react";
 import MenuIniciar from "../MenuIniciar/MenuIniciar";
+import { api } from "@/api";
 
 interface IBottomBar {
   janelas: {
@@ -37,6 +38,10 @@ const BottomBar: React.FC<IBottomBar> = ({janelas, focaJanela}) => {
     
     setJanelasBarra(janelasAtivas)
   }, [janelas])
+
+  const onTeste = async () => {
+    const response = await api.post('/teste');
+  }
 
   return (
     <Flex
@@ -75,6 +80,7 @@ const BottomBar: React.FC<IBottomBar> = ({janelas, focaJanela}) => {
       </Flex>
       <Spacer />
       <Flex>
+        <Button onClick={onTeste}>teste</Button>
         <ColorModeButton />
       </Flex>
     </Flex>
