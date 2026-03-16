@@ -33,8 +33,7 @@ const Produtos: React.FC<IJanelaSimples> = ({
   const [produtoSelecionado, setProdutoSelecionado] = useState<any>(null);
   
   // dados
-  const { data: produtosData, refetch, isLoading} = useProdutos();
-
+  const { data: produtosData, refetch, isLoading, isRefetching} = useProdutos();
 
   const handleDeleteProduto = (id: string) => {
     async function deletarProduto() {
@@ -169,9 +168,11 @@ const Produtos: React.FC<IJanelaSimples> = ({
           >
             <DinamicTable 
               maxH="100%"
-              data={produtosData || []}
+              data={produtosData?.data ?? []}
               colunas={ColunasProdutos}
               isLoading={isLoading}
+              refreshData={refetch}
+              refreshing={isRefetching}
             />
           </Flex>
         </>

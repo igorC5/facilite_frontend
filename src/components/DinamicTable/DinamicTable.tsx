@@ -9,6 +9,7 @@ interface IDinamicTable {
   data: any[];
   maxH: any;
   refreshData?: any;
+  refreshing?: boolean;
   isLoading?: boolean;
 }
 
@@ -17,6 +18,7 @@ const DinamicTable: React.FC<IDinamicTable> = ({
   data,
   maxH,
   refreshData,
+  refreshing,
   isLoading,
 }) => {
   const bg = useColorModeValue("white", "gray.700");
@@ -91,7 +93,24 @@ const DinamicTable: React.FC<IDinamicTable> = ({
         justify="space-between"
         align="center"
       >
-        <Text>Total: {data.length}</Text>
+        <Flex align="center">
+          <Tooltip content="Recarregar">
+            <Button
+              onClick={refreshData}
+              m="0px" 
+              p="0px" 
+              variant="ghost" 
+              hidden={refreshData == null}
+            >
+              {refreshing ? (
+                <Spinner color="blue.500" />
+              ) : (
+                <Icon color={color} as={RefreshCcw} />
+              )}
+            </Button>
+          </Tooltip>
+          <Text>Total: {data.length}</Text>
+        </Flex>
         <Flex flexDir="row" align="center">
           <Text>Página:</Text>
           <Input 

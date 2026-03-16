@@ -57,11 +57,11 @@ const EditarProduto: React.FC<IEditarProduto> = ({ setModoTela, refetch, produto
   useEffect(() => {
     async function loadProduto() {
       const response = await api.get(`/produtos/${produtoId}`);
-      const produto = response.data;
+      const produto = response.data.data;
       
       reset({
         nome: produto.nome,
-        precoVenda: produto.preco_venda,
+        precoVenda: Number(produto.preco_venda),
         ncm: produto.ncm,
         unidade: produto.unidade,
       })

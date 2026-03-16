@@ -7,6 +7,7 @@ import { Button, Flex, Heading, SimpleGrid } from "@chakra-ui/react";
 import { useState } from "react";
 import CardModulo from "./Components/CardModulo";
 import CardSelecionado from "./Components/CardSelecionado";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface IJanelas {
   id: number; 
@@ -17,6 +18,7 @@ interface IJanelas {
 const Homepage = () => {
   const { logout } = useAuth();
   const bg = useColorModeValue("gray.100", "gray.800");
+  const queryClient = useQueryClient();
   const modulos = useModulos();
   const [janelas, setJanelas] = useState<{ id: number; minimizada: boolean; zIndex: number}[]>([]);
   const dadosLogin = (() => {
@@ -39,6 +41,7 @@ const Homepage = () => {
 
   const handleLogout = () => {
     logout();
+    queryClient.clear();
   }
 
   return (
@@ -53,7 +56,7 @@ const Homepage = () => {
             >
               Sair
             </Button>
-            <Heading color="white" pl="2">
+            <Heading color={useColorModeValue("black", "white")} pl="2">
               {dadosLogin?.nome_empresa} - {dadosLogin?.filial} - {dadosLogin?.usuario}
             </Heading>
           </Flex>

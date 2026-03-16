@@ -13,8 +13,7 @@ type IProdutos = IProduto[];
 
 async function getProdutos() {
   const response = await api.get<IProdutos>('/produtos');
-
-  return response.data;
+  return response?.data;
 }
 
 export function useProdutos() {
