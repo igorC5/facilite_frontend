@@ -1,6 +1,7 @@
 import { useColorModeValue } from "@/components/ui/color-mode";
 import Produtos from "@/janelas/Estoque/Produtos/Produtos";
 import Clientes from "@/janelas/Vendas/Clientes/Clientes";
+import Servicos from "@/janelas/Vendas/Servicos/Servicos";
 
 export function useModulos(){
   const vendasColor1 = useColorModeValue("green.400", "green.600");
@@ -41,6 +42,12 @@ export function useModulos(){
           id: 3,
           texto: "Notas Fiscais (NFE e NFC)",
           // janelaId: 3,
+        },
+        {
+          id: 4,
+          texto: "Serviços",
+          janelaId: 99,
+          componente: Servicos
         },
       ]
     },
