@@ -38,17 +38,22 @@ const DinamicTable: React.FC<IDinamicTable> = ({
       tableLayout="fixed" 
       bg={bg}
       borderWidth="2px" 
-      py="2"
+      // py="2"
       px="4"
       rounded="2xl"
       flexDir='column'
     >
-      <Table.Root w="100%" bg={bg} mb="4">
+      <Table.Root w="100%" bg={bg} mb="0">
         <Table.Header bg={bg} >
           <Table.Row >
             {colunas?.map(coluna => {
               return (
-                  <Table.ColumnHeader key={coluna.acesso} {...(coluna.hCell || {})} bg={bg} color={color}>
+                  <Table.ColumnHeader 
+                    key={coluna.acesso} 
+                    {...(coluna.hCell || {})} 
+                    bg={bg} 
+                    color={color}
+                  >
                     {coluna.header}
                   </Table.ColumnHeader>
                 )
@@ -58,7 +63,7 @@ const DinamicTable: React.FC<IDinamicTable> = ({
         <Table.Body>
           {isLoading && (
             <Table.Row bg="none">
-              <Table.Cell colSpan={colunas.length} p="8">
+              <Table.Cell colSpan={colunas.length}>
                 <Flex justify="center" align="center" w="100%">
                   <Spinner size="lg" borderWidth="3px" color="blue.500" />
                 </Flex>
@@ -66,9 +71,9 @@ const DinamicTable: React.FC<IDinamicTable> = ({
             </Table.Row>
           )}
           {data.map((linha, indexLinha) => (
-            <Table.Row key={indexLinha}>
+            <Table.Row key={indexLinha} bg="red">
               {colunas.map(coluna => (
-                <Table.Cell bg={bg} color={color}>
+                <Table.Cell bg={bg} color={color} py="0">
                   {
                     coluna.cell
                     ? coluna.cell(linha)
@@ -87,8 +92,9 @@ const DinamicTable: React.FC<IDinamicTable> = ({
       </Table.Root>
       <Flex 
         flex="1" 
-        h="10%"
-        py="2"
+        // h="10%"
+        py="1"
+        m="0"
         px="4"
         justify="space-between"
         align="center"

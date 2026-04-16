@@ -4,8 +4,10 @@ import { Tooltip } from "@/components/ui/tooltip";
 import { useColors } from "@/styles/cores";
 import { Button, Flex, Icon, IconButton, Input, InputGroup, Spacer, Text } from "@chakra-ui/react";
 import { Funnel, LucideEdit, LucideTrash, PlusCircle, Search } from "lucide-react";
-import React, { useState } from "react";
-import CriarCliente from "./CriarCliente";
+import React, { useEffect, useState } from "react";
+import FormCliente from "./FormCliente";
+import { useClientes } from "@/hooks/useClientes";
+import { useQueryClient } from "@tanstack/react-query";
 
 const Clientes: React.FC<IJanelaSimples> = ({
   janelaInfo,
@@ -27,19 +29,49 @@ const Clientes: React.FC<IJanelaSimples> = ({
     | 3 // editar cliente
   >(1); // valor inicial
 
+  // dados
+  const { data: clientesData, refetch, isLoading, isRefetching} = useClientes();
+  const [clienteId, setClienteId] = useState(null);
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    if (modoTela === 1) {
+      setClienteId(null);
+      queryClient.invalidateQueries({ queryKey: ["cliente"] });
+    }
+  }, [modoTela]);
+
   const ColunasClientes = React.useMemo(
     () => [
+      {
+        header: 'CÓDIGO',
+        acesso: 'id',
+      },
       {
         header: 'NOME',
         acesso: 'nome',
       },
       {
         header: 'TIPO',
-        acesso: 'tipo'
+        acesso: 'tipo',
+        cell: (row) => {
+          return (
+            <Flex>
+              <Text>{row.tipoPessoa == "PF" ? "Pessoa Física" : "Pessoa Jurídica"}</Text>
+            </Flex>
+          )
+        }
       },
       {
         header: 'CPF/CNPJ',
-        acesso: 'cpf_cnpj'
+        acesso: 'cpf_cnpj',
+        cell: (row) => {
+          return (
+            <Flex>
+              <Text>{row.tipoPessoa == "PF" ? row.cpf : row.cnpj}</Text>
+            </Flex>
+          )
+        }
       },
       {
         header: 'IE',
@@ -77,7 +109,12 @@ const Clientes: React.FC<IJanelaSimples> = ({
           return (
             <Flex w="max-content">
               <Tooltip content="Editar cliente" openDelay={0}>
-                <Button h="24px" bg="none" px="0" py={4}>
+                <Button h="24px" bg="none" px="0" py={4}
+                  onClick={() => {
+                    setClienteId(row.id);
+                    setModoTela(2);
+                  }}
+                >
                   <Icon as={LucideEdit} color="blue.500" />
                 </Button>
               </Tooltip>
@@ -93,144 +130,6 @@ const Clientes: React.FC<IJanelaSimples> = ({
     ],
     []
   )
-
-  const getClientesData = () => {
-    const dataMockada = [
-      {
-        id: "1",
-        nome: "1 João Silva",
-        tipo: "Fisica",
-        cpf_cnpj: "123456789-1",
-        ie: '1234567-891',
-        cep: '1234567-891',
-        cidade: 'SAO PAULO',
-        bairro: 'Pinheiros',
-        rua: 'Rua dos Brilhantes',
-        pais: 'Brasil',
-        telefone: '(12) 3456-7891',
-      },
-      {
-        id: "1",
-        nome: "2 João Silva",
-        tipo: "Fisica",
-        cpf_cnpj: "123456789-1",
-        ie: '1234567-891',
-        cep: '1234567-891',
-        cidade: 'SAO PAULO',
-        bairro: 'Pinheiros',
-        rua: 'Rua dos Brilhantes',
-        pais: 'Brasil',
-        telefone: '(12) 3456-7891',
-      },
-      {
-        id: "1",
-        nome: "3 João Silva",
-        tipo: "Fisica",
-        cpf_cnpj: "123456789-1",
-        ie: '1234567-891',
-        cep: '1234567-891',
-        cidade: 'SAO PAULO',
-        bairro: 'Pinheiros',
-        rua: 'Rua dos Brilhantes',
-        pais: 'Brasil',
-        telefone: '(12) 3456-7891',
-      },
-      {
-        id: "1",
-        nome: "4 João Silva",
-        tipo: "Fisica",
-        cpf_cnpj: "123456789-1",
-        ie: '1234567-891',
-        cep: '1234567-891',
-        cidade: 'SAO PAULO',
-        bairro: 'Pinheiros',
-        rua: 'Rua dos Brilhantes',
-        pais: 'Brasil',
-        telefone: '(12) 3456-7891',
-      },
-      {
-        id: "1",
-        nome: "5 João Silva",
-        tipo: "Fisica",
-        cpf_cnpj: "123456789-1",
-        ie: '1234567-891',
-        cep: '1234567-891',
-        cidade: 'SAO PAULO',
-        bairro: 'Pinheiros',
-        rua: 'Rua dos Brilhantes',
-        pais: 'Brasil',
-        telefone: '(12) 3456-7891',
-      },
-      {
-        id: "1",
-        nome: "6 João Silva",
-        tipo: "Fisica",
-        cpf_cnpj: "123456789-1",
-        ie: '1234567-891',
-        cep: '1234567-891',
-        cidade: 'SAO PAULO',
-        bairro: 'Pinheiros',
-        rua: 'Rua dos Brilhantes',
-        pais: 'Brasil',
-        telefone: '(12) 3456-7891',
-      },
-      {
-        id: "1",
-        nome: "7 João Silva",
-        tipo: "Fisica",
-        cpf_cnpj: "123456789-1",
-        ie: '1234567-891',
-        cep: '1234567-891',
-        cidade: 'SAO PAULO',
-        bairro: 'Pinheiros',
-        rua: 'Rua dos Brilhantes',
-        pais: 'Brasil',
-        telefone: '(12) 3456-7891',
-      },
-      {
-        id: "1",
-        nome: "8 João Silva",
-        tipo: "Fisica",
-        cpf_cnpj: "123456789-1",
-        ie: '1234567-891',
-        cep: '1234567-891',
-        cidade: 'SAO PAULO',
-        bairro: 'Pinheiros',
-        rua: 'Rua dos Brilhantes',
-        pais: 'Brasil',
-        telefone: '(12) 3456-7891',
-      },
-      {
-        id: "1",
-        nome: "9 João Silva",
-        tipo: "Fisica",
-        cpf_cnpj: "123456789-1",
-        ie: '1234567-891',
-        cep: '1234567-891',
-        cidade: 'SAO PAULO',
-        bairro: 'Pinheiros',
-        rua: 'Rua dos Brilhantes',
-        pais: 'Brasil',
-        telefone: '(12) 3456-7891',
-      },
-      {
-        id: "1",
-        nome: "10 João Silva",
-        tipo: "Fisica",
-        cpf_cnpj: "123456789-1",
-        ie: '1234567-891',
-        cep: '1234567-891',
-        cidade: 'SAO PAULO',
-        bairro: 'Pinheiros',
-        rua: 'Rua dos Brilhantes',
-        pais: 'Brasil',
-        telefone: '(12) 3456-7891',
-      },
-    ]
-
-    const rows: any[] = [];
-    return rows;
-  }
 
   return (
     <JanelaSimples
@@ -280,17 +179,21 @@ const Clientes: React.FC<IJanelaSimples> = ({
             maxH={450}
             w="100%" 
           >
-            <DinamicTable
+            <DinamicTable 
               maxH="100%"
+              data={clientesData?.data ?? []}
               colunas={ColunasClientes}
-              data={getClientesData() ? getClientesData() : []}
+              isLoading={isLoading}
+              refreshData={refetch}
+              refreshing={isRefetching}
             />
           </Flex>
         </>
       )}
       {modoTela === 2 && (
-        <CriarCliente 
+        <FormCliente 
           setModoTela={setModoTela}
+          ClienteId={clienteId}
         />
       )}
     </JanelaSimples>
