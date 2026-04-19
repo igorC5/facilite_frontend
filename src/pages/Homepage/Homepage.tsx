@@ -4,10 +4,11 @@ import { useColorModeValue } from "@/components/ui/color-mode";
 import { useModulos } from "@/configs/SubModulesConfigs";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button, Flex, Heading, SimpleGrid } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CardModulo from "./Components/CardModulo";
 import CardSelecionado from "./Components/CardSelecionado";
 import { useQueryClient } from "@tanstack/react-query";
+import { api } from "@/api";
 
 interface IJanelas {
   id: number; 
@@ -39,6 +40,15 @@ const Homepage = () => {
     }
   }
 
+  useEffect(() => {
+    const load = async () => {
+      const response = await api.get(`/empresas/${dadosLogin?.empresa}/modulos`);
+      console.log(response.data);
+    }
+    
+    load();
+  }, [dadosLogin]);
+
   const handleLogout = () => {
     logout();
     queryClient.clear();
@@ -61,6 +71,9 @@ const Homepage = () => {
             </Heading>
           </Flex>
           <Flex w="100%">
+        
+          </Flex>
+          {/* <Flex w="100%">
             <Flex w="60%">
               <SimpleGrid
                 w="100%" 
@@ -116,7 +129,7 @@ const Homepage = () => {
                 }}
               />
             </Flex>
-          </Flex>
+          </Flex> */}
         </Flex>
         <BottomBar 
           janelas={janelas} 
