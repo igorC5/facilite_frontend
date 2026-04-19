@@ -73,19 +73,37 @@ const FormCliente: React.FC<ICriarCliente> = ({
     setEnviando(true)
     if (enviando) return;
     try {
-      const response = await api.post('/clientes', {
-        nome: data.nome,
-        tipoPessoa: data.tipoDocumento,
-        cpf: '13992300935',
-      })
-
-      setModoTela(1);
-
-      toaster.success({
-        title: 'Cliente criado com sucesso!',
-        description: 'Visualize-o na tabela de clientes',
-        closable: true,
-      })
+      // CADASTRO
+      if (ClienteId === null) {   
+        const response = await api.post('/clientes', {
+          nome: data.nome,
+          tipoPessoa: data.tipoDocumento,
+          cpf: '13992300935',
+        })
+  
+        setModoTela(1);
+  
+        toaster.success({
+          title: 'Cliente criado com sucesso!',
+          description: 'Visualize-o na tabela de clientes',
+          closable: true,
+        })
+      } else {
+        // EDIÇÃO
+        const response = await api.put(`/clientes/${ClienteId}`, {
+          nome: data.nome,
+          tipoPessoa: data.tipoDocumento,
+          cpf: '13992300935',
+        })
+  
+        setModoTela(1);
+  
+        toaster.success({
+          title: 'Cliente editado com sucesso!',
+          description: 'Visualize-o na tabela de clientes',
+          closable: true,
+        })
+      }
     } catch (error: any) {
       const mensagemBruta =
         error?.response?.data?.message ??
