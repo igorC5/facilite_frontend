@@ -43,7 +43,7 @@ const DinamicTable: React.FC<IDinamicTable> = ({
       rounded="2xl"
       flexDir='column'
     >
-      <Table.Root w="100%" bg={bg} mb="0">
+      <Table.Root w="100%" bg={bg} mb="0" striped fontWeight="medium">
         <Table.Header bg={bg} >
           <Table.Row >
             {colunas?.map(coluna => {
@@ -71,9 +71,12 @@ const DinamicTable: React.FC<IDinamicTable> = ({
             </Table.Row>
           )}
           {data.map((linha, indexLinha) => (
-            <Table.Row key={indexLinha} bg="red">
+            <Table.Row key={indexLinha}>
               {colunas.map(coluna => (
-                <Table.Cell bg={bg} color={color} py="0">
+                <Table.Cell 
+                  color={color} 
+                  py="0"
+                >
                   {
                     coluna.cell
                     ? coluna.cell(linha)

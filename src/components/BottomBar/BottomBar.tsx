@@ -14,8 +14,8 @@ interface IBottomBar {
 }
 
 const BottomBar: React.FC<IBottomBar> = ({janelas, focaJanela}) => {
-  const bg1 = useColorModeValue('teal.400', 'teal.400');
-  const bg2 = useColorModeValue('teal.600', 'teal.600');
+  const bg1 = useColorModeValue('white', 'gray.800');
+  const bg2 = useColorModeValue('gray.300', 'gray.700');
   const modulos = useModulos();
   
   const [janelasBarra, setJanelasBarra] = useState<{id: number; titulo: string}[]>([]);
@@ -45,11 +45,11 @@ const BottomBar: React.FC<IBottomBar> = ({janelas, focaJanela}) => {
 
   return (
     <Flex
-      // bg={bg}
+      // bg={"white"}
       bgGradient='to-b'
       gradientFrom={bg1}
-      // gradientVia='teal.500'
       gradientTo={bg2}
+      // gradientVia='teal.500'
       h="8vh" 
       // px="3"
       borderTopWidth="1px"

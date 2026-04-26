@@ -3,12 +3,13 @@ import type { IJanelaSimples } from "@/components/Janelas/JanelaSimples";
 import { useColorModeValue } from "@/components/ui/color-mode";
 import { useModulos } from "@/configs/SubModulesConfigs";
 import { useAuth } from "@/contexts/AuthContext";
-import { Button, Flex, Heading, SimpleGrid } from "@chakra-ui/react";
+import { Button, Flex, Heading, Icon, Image, SimpleGrid, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import CardModulo from "./Components/CardModulo";
 import CardSelecionado from "./Components/CardSelecionado";
 import { useQueryClient } from "@tanstack/react-query";
 import { api } from "@/api";
+import { consultaModulo } from "@/configs/modulosConfigs";
 
 interface IJanelas {
   id: number; 
@@ -18,10 +19,11 @@ interface IJanelas {
 
 const Homepage = () => {
   const { logout } = useAuth();
-  const bg = useColorModeValue("gray.100", "gray.800");
+  const bg = useColorModeValue("blue.500", "gray.800");
   const queryClient = useQueryClient();
   const modulos = useModulos();
   const [janelas, setJanelas] = useState<{ id: number; minimizada: boolean; zIndex: number}[]>([]);
+  const [modulosDisponiveis, setModulosDisponiveis] = useState(null);
   const dadosLogin = (() => {
     try {
       const data = localStorage.getItem('usuario');
@@ -43,11 +45,11 @@ const Homepage = () => {
   useEffect(() => {
     const load = async () => {
       const response = await api.get(`/empresas/${dadosLogin?.empresa}/modulos`);
-      console.log(response.data);
+      setModulosDisponiveis(response.data);
     }
     
     load();
-  }, [dadosLogin]);
+  }, [dadosLogin?.empresa]);
 
   const handleLogout = () => {
     logout();
@@ -56,7 +58,16 @@ const Homepage = () => {
 
   return (
     <>
-      <Flex bg={bg} color="black" w="100vw" h="100vh" flexDir="column">
+      <Flex 
+        // bg={bg} 
+        bgGradient='to-br'
+        gradientFrom="blue.600"
+        gradientTo="blue.400"
+        color="black" 
+        w="100vw" 
+        h="100vh" 
+        flexDir="column"
+      >
         <Flex h="92vh" flexDir="column" w="100%">
           <Flex align="center">
             <Button 
@@ -70,8 +81,60 @@ const Homepage = () => {
               {dadosLogin?.nome_empresa} - {dadosLogin?.filial} - {dadosLogin?.usuario}
             </Heading>
           </Flex>
-          <Flex w="100%">
-        
+          <Flex 
+            w="100%"
+            h="100%"
+            backgroundSize="100px 140px"
+            backgroundAttachment="fixed"
+            backgroundImage={`
+              linear-gradient(to right, rgba(255, 255, 255, 0.479) 1px, transparent 1px),
+              linear-gradient(to bottom, rgba(255, 255, 255, 0.479) 1px, transparent 1px)
+            `}
+          >
+            {modulosDisponiveis?.map(mod => {
+              const dadosModulo = consultaModulo(mod?.id);
+              return (
+                <Flex 
+                  key={mod.id}
+                  w="100px" 
+                  h="100px" 
+                  flexDir="column" 
+                  align="center"
+                  cursor="pointer"
+                  onClick={() => {
+
+                    // desfazer minimizacao
+                    if (janelas.some(jan => jan.id === dadosModulo?.janelaId && jan.minimizada)) {
+                      setJanelas(prev => prev.map(
+                        prevJanela => prevJanela.id === dadosModulo?.janelaId
+                        ? {...prevJanela, minimizada: false}
+                        : prevJanela
+                      ))
+                    }
+
+                    // abrir janela
+                    if (!janelas.some(jan => jan.id === dadosModulo?.janelaId)) {
+                      setModSelecionado(0)
+                      setJanelas(prev => [...prev, 
+                        { 
+                          ...dadosModulo,
+                          id: dadosModulo?.janelaId, 
+                          minimizada: false,
+                          zIndex: 1,
+                        }
+                      ])
+                    }
+                  }}
+                >
+                  <Image 
+                    src="/public/icones/vendas.webp" 
+                    boxSize="70px"
+                    objectFit="contain"
+                  />
+                  <Text fontWeight="medium">{mod?.nome}</Text>
+                </Flex>
+              )
+            })}
           </Flex>
           {/* <Flex w="100%">
             <Flex w="60%">
@@ -165,14 +228,13 @@ const Homepage = () => {
       </Flex>
 
       {janelas?.map(janela => {
-        const modulo = modulos?.find(mod =>
-          mod.opcoes?.some(op => op.janelaId === janela.id)
-        );
-        const submodulo = modulo?.opcoes.find(sub => sub.janelaId === janela.id);
-        const Componente: IJanelaSimples = submodulo?.componente;
-      
+        const modulo = consultaModulo(janela.id);
+        // const modulo = modulosDisponiveis?.find(mod => mod?.janelaId === janela?.id);
+        // const submodulo = modulo?.opcoes.find(sub => sub.janelaId === janela.id);
+        const Componente: IJanelaSimples = modulo?.componente;
+        console.log(janela)
         return modulo ? (
-          <Componente 
+          <Componente
             janelaInfo={janela}
             open={true} 
             fecharJanela={(janelaID) => {

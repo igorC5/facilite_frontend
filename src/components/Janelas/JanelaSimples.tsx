@@ -71,7 +71,7 @@ export default function JanelaSimples({
       }}
       zIndex={minimizada ? -5 : zIndexJanela}
       w="100vw"
-      h="90vh" 
+      h="92vh" 
       position="absolute" 
       top="0" 
       overflow="hidden" 
@@ -116,7 +116,7 @@ export default function JanelaSimples({
             bg={Colors.borderColor}
             onDoubleClick={mudarTamanho}
           >
-            <Text pl="2">{janelaInfo.texto}</Text>
+            <Text fontWeight="medium" pl="2">{janelaInfo.texto}</Text>
             <Spacer />
             <Button 
               h="30px"

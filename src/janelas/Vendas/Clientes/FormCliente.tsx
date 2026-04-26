@@ -10,7 +10,6 @@ import {
   Spinner,
   Stack,
   Text,
-  useEditable
 } from "@chakra-ui/react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -22,6 +21,7 @@ import z from "zod";
 const FormSchema = z.object({
   nome: z.string().nonempty('Campo Obrigatório'),
   tipoDocumento: z.string().nonempty('Campo Obrigatório'),
+  documento: z.string().nonempty('Campo Obrigatório'),
 })
 
 export type CriarClienteFormData = z.infer<typeof FormSchema>;
@@ -41,6 +41,12 @@ const FormCliente: React.FC<ICriarCliente> = ({
   useEffect(() => {
     if (isSuccess && clienteEditData) {
       setValue("nome", clienteEditData.data.nome);
+      setValue("tipoDocumento", clienteEditData?.data?.tipo_pessoa);
+      if (clienteEditData?.data?.tipo_pessoa === "PF") {
+        setValue("documento", clienteEditData.data.cpf);
+      } else {
+        setValue("documento", clienteEditData.data.cnpj);
+      }
     }
   }, [isFetching])
 
@@ -49,6 +55,7 @@ const FormCliente: React.FC<ICriarCliente> = ({
     defaultValues: {
       nome: "",
       tipoDocumento: "PF",
+      documento: "",
     },
   });
 
@@ -61,6 +68,8 @@ const FormCliente: React.FC<ICriarCliente> = ({
     handleSubmit,
     formState: { errors, isSubmitting}
   } = methods;
+
+  const tipoDocumento_watch = watch("tipoDocumento");
   
   const temErros = Object.keys(errors).length > 0;
   
@@ -194,6 +203,19 @@ const FormCliente: React.FC<ICriarCliente> = ({
             w="50%"
             placeholder="Digite aqui"
             {...register("nome")}
+          />
+
+          <Text fontWeight='medium'>{}</Text>
+          <TextInput
+            w="50%"
+            inputMode='numeric'
+            maxLength={14}
+            placeholder="Digite aqui"
+            {...register("documento", {
+              onChange: (e) => {
+                e.target.value = e.target.value.replace(/\D/g, ""); // remove qualquer não número
+              },
+            })}
           />
           {errors.nome && (
             <Text fontSize="sm" color="red.500">
